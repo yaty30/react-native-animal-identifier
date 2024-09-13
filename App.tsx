@@ -1,118 +1,330 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, { useState, useRef, useEffect } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text, TextInput, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, ScrollView, Image } from 'react-native';
+// import Shadow from 'react-native-simple-shadow-view';
+import { Camera, useCameraDevice, useCameraFormat, useFrameProcessor } from 'react-native-vision-camera';
+import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import RNFS from 'react-native-fs';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { observer } from 'mobx-react-lite';
+import { messages, testing } from './stores/store';
+import { feed, talk } from './api/api';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+export default observer(() => {
+    const [recording, setRecording] = useState(false);
+    const [photo, setPhoto] = useState<string>();
+    const [keyboardTrigger, setKeyboardTrigger] = useState<boolean>(false);
+    const cameraRef = useRef<Camera>(null);
+    const commentViewRef = useRef<ScrollView>(null);
+    const [text, onChangeText] = useState<string>('');
+    const device = useCameraDevice('back');
+    if (device == null) return <></>;
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+        bodyView: {
+            flex: 1,
+            width: '100%',
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'flex-start',
+            position: 'relative',
+            paddingTop: 15,
+            paddingBottom: 15,
+            paddingLeft: 25,
+            paddingRight: 25,
+        },
+        avatar: {
+            backgroundColor: "#9514E8",
+            padding: 15,
+            borderRadius: 50,
+            width: 45,
+            height: 45
+        },
+        name: {
+            marginLeft: 10,
+            fontSize: 18,
+            fontWeight: 'bold',
+        },
+        status: {
+            position: 'absolute',
+            right: 0,
+            backgroundColor: recording ? 'rgba(241, 26, 67, 0.6)' : 'rgba(149, 20, 232, 0.6)',
+            paddingTop: 9,
+            paddingBottom: 9,
+            paddingLeft: 12,
+            paddingRight: 12,
+            borderRadius: 25
+        },
+        bottomView: {
+            position: 'absolute',
+            bottom: keyboardTrigger ? 42 : 35,
+            left: 25,
+            width: '100%',
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+        },
+        inputStyle: {
+            backgroundColor: "rgba(52, 52, 52, 0.25)",
+            padding: 10,
+            paddingTop: 0,
+            paddingBottom: 0,
+            borderRadius: 50,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+        },
+        input: {
+            height: 60,
+            width: '65%',
+            fontSize: 18,
+            color: '#DEDEDE',
+            padding: 20,
+            borderRadius: 10,
+            // shadowColor: '#000',
+            // shadowOffset: {
+            // 	width: 0,
+            // 	height: 2,
+            // },
+            // shadowOpacity: 0.5,
+            // shadowRadius: 3.84,
+            // elevation: 5,
+        },
+        boxShadow: {
+            width: 200,
+            height: 200,
+            backgroundColor: '#FFF',
+            padding: 20,
+        },
+        recordButton: {
+            width: 60, // Set a fixed width for the TouchableOpacity
+            height: 60, // Set a fixed height for the TouchableOpacity
+            marginTop: 5,
+            marginLeft: 10,
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: recording ? "rgba(241, 26, 67, 0.85)" : "rgba(52, 52, 52, 0.75)",
+            borderRadius: 50,
+        },
+        commentView: {
+            position: 'absolute',
+            bottom: 120,
+            left: 25,
+            width: '100%',
+            height: 180,
+            zIndex: 1
+        },
+        commentInnerScrollView: {
+            width: '100%',
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+            height: '100%',
+            zIndex: 1
+        },
+        commentBlock: {
+            backgroundColor: "rgba(219, 216, 225, 0.35)",
+            borderRadius: 50,
+            paddingVertical: 10,
+            paddingHorizontal: 10,
+            marginBottom: 15,
+            width: '100%',
+            flexDirection: 'row',
+            alignItems: 'center', // Update to 'center' for vertical alignment
+            justifyContent: 'space-between',
+        },
+        commentSystemAvatar: {
+            backgroundColor: "#9514E8",
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 50,
+            width: 35,
+            height: 35,
+            marginRight: 20,
+        },
+        commentUserAvatar: {
+            backgroundColor: "#004F46",
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 50,
+            width: 35,
+            height: 35,
+            marginRight: 20,
+        },
+        commentText: {
+            flex: 1,
+            fontWeight: 'bold',
+            marginRight: 10
+        },
+    });
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+    const format = useCameraFormat(device, [{ fps: 1 }])
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+    const handleTakePhoto = async () => {
+        setRecording(!recording);
+        setInterval(async () => {
+            const photos = await cameraRef.current?.takePhoto();
+            const base64String = await RNFS.readFile(photos?.path?? "", 'base64');
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+            feed({
+                id: 0,
+                timestamp: 0,
+                footageFrame: base64String
+            })
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
+            setPhoto(photos?.path.toString());
+        }, 1000)
+    };
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+    const handleContainerPress = () => {
+        Keyboard.dismiss();
+    };
 
-export default App;
+    useEffect(() => {
+        commentViewRef.current?.scrollToEnd({
+            animated: false
+        })
+    }, [])
+
+    const handleContentSizeChange = () => {
+        commentViewRef.current?.scrollToEnd({ animated: true });
+    };
+
+    const frameProcessor = useFrameProcessor((frame) => {
+        'worklet'
+        console.log(`Frame: ${frame.width}x${frame.height} (${frame.pixelFormat})`)
+    }, [])
+
+    return (
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+            <TouchableWithoutFeedback onPress={handleContainerPress}>
+                <View style={styles.container}>
+                    <View style={{ display: 'none' }}>
+                        <Camera
+                            style={StyleSheet.absoluteFill}
+                            device={device} isActive={true}
+                            photo={true} ref={cameraRef}
+                            pixelFormat="yuv"
+                            format={format}
+                            video={true}
+                            // frameProcessor={frameProcessor}
+                        />
+                    </View>
+                    <Image 
+                        source={{ 
+                            // uri: "file://" + photo 
+                            uri: testing.frame
+                        }} 
+                        fadeDuration={0}
+                        style={StyleSheet.absoluteFill} 
+                    />
+                    <View style={styles.bodyView}>
+                        <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', width: '100%' }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <TouchableOpacity style={styles.avatar}></TouchableOpacity>
+                                <Text style={styles.name}>Name</Text>
+                            </View>
+                            <TouchableOpacity style={styles.status}>
+                                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#f4f4f4' }}>
+                                    {recording ? "Recording" : "Waiting"}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        {/* need to avoid the Keyboard when triggering */}
+
+                        {/* Message display area */}
+                        <ScrollView
+                            style={styles.commentView}
+                            contentContainerStyle={{ alignItems: 'flex-end' }}
+                            ref={commentViewRef}
+                            onContentSizeChange={handleContentSizeChange}
+                            onLayout={handleContentSizeChange}
+                        >
+                            <View style={styles.commentInnerScrollView}>
+                                {
+                                    messages.list.map((x, i) =>
+                                        <TouchableOpacity key={i} style={styles.commentBlock}>
+                                            <TouchableOpacity style={x.from === 0 ? styles.commentUserAvatar : styles.commentSystemAvatar}>
+                                                {x.from === 0 ?
+                                                    <FontAwesome5 name="user-alt" size={15} color="#fff" />
+                                                    :
+                                                    <MaterialCommunityIcons name="robot" size={20} color="#000" />
+                                                }
+                                            </TouchableOpacity>
+                                            <Text style={styles.commentText}>{`${x.message}`}</Text>
+                                        </TouchableOpacity>
+                                    )
+                                }
+                            </View>
+                        </ScrollView>
+
+                        <View style={styles.bottomView}>
+                            <View style={styles.inputStyle}>
+                                <TextInput
+                                    placeholder={`Message ...${recording}`}
+                                    style={styles.input}
+                                    onChangeText={onChangeText}
+                                    value={text}
+                                    onFocus={() => {
+                                        setRecording(false)
+                                        setKeyboardTrigger(true)
+                                    }}
+                                    onBlur={() => setKeyboardTrigger(false)}
+                                />
+                                <TouchableOpacity
+                                    style={{ backgroundColor: '#CD32D7', borderRadius: 50, padding: 10, paddingRight: 13, paddingTop: 13, marginTop: 10, marginBottom: 10 }}
+                                    onPress={() => {
+                                        messages.newMessage({
+                                            message: text,
+                                            timestamp: 0,
+                                            from: 0
+                                        })
+                                        talk({
+                                            id: 0,
+                                            timestamp: 0,
+                                            message: text
+                                        })
+                                        onChangeText("")
+                                        Keyboard.dismiss()
+                                    }}
+                                >
+                                    <Feather name="send"
+                                        size={24}
+                                        style={{
+                                            color: '#fefefe'
+                                        }}
+                                    />
+                                </TouchableOpacity>
+                            </View>
+
+                            <TouchableOpacity
+                                style={styles.recordButton}
+                                onPress={() =>
+                                    // setRecording(!recording)
+                                    handleTakePhoto()
+                                }
+                            >
+                                <Feather
+                                    name={recording ? "pause" : "play"}
+                                    size={24}
+                                    style={{
+                                        color: '#fefefe',
+                                        textAlignVertical: 'center', // Align the text vertically centered
+                                        lineHeight: 60, // Set line height to match the TouchableOpacity height
+                                    }}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </TouchableWithoutFeedback>
+
+        </KeyboardAvoidingView>
+    );
+})
