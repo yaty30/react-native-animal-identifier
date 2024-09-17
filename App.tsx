@@ -117,7 +117,7 @@ export default observer(() => {
             bottom: 120,
             left: 25,
             width: '100%',
-            height: 180,
+            maxHeight: 180,
             zIndex: 1
         },
         commentInnerScrollView: {
@@ -163,10 +163,17 @@ export default observer(() => {
         },
     });
 
-    const format = useCameraFormat(device, [{ fps: 1 }])
+    let format = useCameraFormat(device, [ { videoResolution: { width: 500, height: 500 }}, { fps: 25 } ])
+
+    if (format) {
+        format = {
+            ...format,
+            minFps: 1,
+            maxFps: 50
+        };
+    } 
 
     const handleTakePhoto = async () => {
-        setRecording(!recording);
         setInterval(async () => {
             const photos = await cameraRef.current?.takePhoto();
             const base64String = await RNFS.readFile(photos?.path?? "", 'base64');
@@ -189,6 +196,14 @@ export default observer(() => {
         commentViewRef.current?.scrollToEnd({
             animated: false
         })
+
+        if(messages.list.length === 0) {
+            talk({
+                id: 0,
+                timestamp: 0,
+                message: "Hello there"
+            })
+        }
     }, [])
 
     const handleContentSizeChange = () => {
@@ -197,7 +212,7 @@ export default observer(() => {
 
     const frameProcessor = useFrameProcessor((frame) => {
         'worklet'
-        console.log(`Frame: ${frame.width}x${frame.height} (${frame.pixelFormat})`)
+        // console.log(`Frame: ${frame.width}x${frame.height} (${frame.pixelFormat})`)
     }, [])
 
     return (
@@ -209,20 +224,23 @@ export default observer(() => {
                             style={StyleSheet.absoluteFill}
                             device={device} isActive={true}
                             photo={true} ref={cameraRef}
-                            pixelFormat="yuv"
+                            pixelFormat="rgb"
                             format={format}
                             video={true}
-                            // frameProcessor={frameProcessor}
+                            frameProcessor={frameProcessor}
                         />
                     </View>
-                    <Image 
-                        source={{ 
-                            // uri: "file://" + photo 
-                            uri: testing.frame
-                        }} 
-                        fadeDuration={0}
-                        style={StyleSheet.absoluteFill} 
-                    />
+                    {
+                        testing.frame && 
+                            <Image 
+                                source={{ 
+                                    // uri: "file://" + photo 
+                                    uri: testing.frame
+                                }} 
+                                fadeDuration={0}
+                                style={StyleSheet.absoluteFill} 
+                            />
+                    }
                     <View style={styles.bodyView}>
                         <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', width: '100%' }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -235,8 +253,6 @@ export default observer(() => {
                                 </Text>
                             </TouchableOpacity>
                         </View>
-
-                        {/* need to avoid the Keyboard when triggering */}
 
                         {/* Message display area */}
                         <ScrollView
@@ -254,7 +270,7 @@ export default observer(() => {
                                                 {x.from === 0 ?
                                                     <FontAwesome5 name="user-alt" size={15} color="#fff" />
                                                     :
-                                                    <MaterialCommunityIcons name="robot" size={20} color="#000" />
+                                                    <MaterialCommunityIcons name="robot" size={20} color="#fff" />
                                                 }
                                             </TouchableOpacity>
                                             <Text style={styles.commentText}>{`${x.message}`}</Text>
@@ -305,10 +321,10 @@ export default observer(() => {
 
                             <TouchableOpacity
                                 style={styles.recordButton}
-                                onPress={() =>
-                                    // setRecording(!recording)
+                                onPress={() => {
+                                    setRecording(!recording)
                                     handleTakePhoto()
-                                }
+                                }}
                             >
                                 <Feather
                                     name={recording ? "pause" : "play"}

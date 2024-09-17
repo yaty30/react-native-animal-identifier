@@ -38,32 +38,5 @@ export const messages = types
         }
     }))
     .create({
-        list: [
-            {
-                id: 0,
-                message: "testing",
-                timestamp: 0,
-                from: 1
-            },{
-                id: 1,
-                message: "testingtestingtestingtestingtestingtestingtestingtestingtestingtestingtestingtesti",
-                timestamp: 0,
-                from: 0
-            },{
-                id: 2,
-                message: "testing",
-                timestamp: 0,
-                from: 1
-            },{
-                id: 3,
-                message: "testing",
-                timestamp: 0,
-                from: 1
-            },{
-                id: 4,
-                message: "testing",
-                timestamp: 0,
-                from: 0
-            },
-        ]
+        list: []
     })
