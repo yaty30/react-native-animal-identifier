@@ -19,6 +19,7 @@ export default observer(() => {
     const commentViewRef = useRef<ScrollView>(null);
     const [text, onChangeText] = useState<string>('');
     const device = useCameraDevice('back');
+
     if (device == null) return <></>;
 
     const styles = StyleSheet.create({
@@ -163,20 +164,20 @@ export default observer(() => {
         },
     });
 
-    let format = useCameraFormat(device, [ { videoResolution: { width: 500, height: 500 }}, { fps: 25 } ])
+    let format = useCameraFormat(device, [{ videoResolution: { width: 500, height: 500 } }, { fps: 50 }])
 
     if (format) {
         format = {
             ...format,
             minFps: 1,
-            maxFps: 50
+            maxFps: 60
         };
-    } 
+    }
 
     const handleTakePhoto = async () => {
         setInterval(async () => {
             const photos = await cameraRef.current?.takePhoto();
-            const base64String = await RNFS.readFile(photos?.path?? "", 'base64');
+            const base64String = await RNFS.readFile(photos?.path ?? "", 'base64');
 
             feed({
                 id: 0,
@@ -197,7 +198,7 @@ export default observer(() => {
             animated: false
         })
 
-        if(messages.list.length === 0) {
+        if (messages.list.length === 0) {
             talk({
                 id: 0,
                 timestamp: 0,
@@ -211,9 +212,14 @@ export default observer(() => {
     };
 
     const frameProcessor = useFrameProcessor((frame) => {
-        'worklet'
-        // console.log(`Frame: ${frame.width}x${frame.height} (${frame.pixelFormat})`)
-    }, [])
+        'worklet';
+
+        if (frame.pixelFormat === 'rgb') {
+            const buffer = frame.toArrayBuffer()
+            const data = new Uint8Array(buffer)
+            console.log(`Pixel at 0,0: RGB(${data[0]}, ${data[1]}, ${data[2]})`)
+        }
+    }, []);
 
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -231,15 +237,15 @@ export default observer(() => {
                         />
                     </View>
                     {
-                        testing.frame && 
-                            <Image 
-                                source={{ 
-                                    // uri: "file://" + photo 
-                                    uri: testing.frame
-                                }} 
-                                fadeDuration={0}
-                                style={StyleSheet.absoluteFill} 
-                            />
+                        testing.frame &&
+                        <Image
+                            source={{
+                                // uri: "file://" + photo
+                                uri: testing.frame
+                            }}
+                            fadeDuration={0}
+                            style={StyleSheet.absoluteFill}
+                        />
                     }
                     <View style={styles.bodyView}>
                         <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', width: '100%' }}>
