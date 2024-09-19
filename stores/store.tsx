@@ -5,7 +5,7 @@ export const testing = types
         frame: types.string
     })
     .actions(self => ({
-        setFrame(frame) {
+        setFrame(frame: string) {
             if(frame != "") self.frame = frame
         }
     }))
@@ -21,12 +21,19 @@ const message = types
         from: types.number
     })
 
+
+interface NewMessageProps {
+    id: number;
+    message: string;
+    timestamp: number;
+    from: number;
+}
 export const messages = types
     .model({
         list: types.array(message)
     })
     .actions(self => ({
-        newMessage(item) {
+        newMessage(item: NewMessageProps) {
             item.id = self.list.length;
             console.log(item);
             self.list.push(item);
@@ -39,4 +46,22 @@ export const messages = types
     }))
     .create({
         list: []
+    })
+
+export const globalVariables = types
+    .model({
+        recording: types.boolean,
+        keyboardTrigger: types.boolean
+    })
+    .actions(self => ({
+        setRecording(recording: boolean) {
+            self.recording = recording
+        },
+        setKeyboardTrigger(keyboardTrigger: boolean) {
+            self.keyboardTrigger = keyboardTrigger
+        },
+    }))
+    .create({
+        recording: false,
+        keyboardTrigger: false
     })

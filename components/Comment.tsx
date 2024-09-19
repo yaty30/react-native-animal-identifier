@@ -1,0 +1,62 @@
+import React, { useRef, useEffect } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'react-native';
+// import Shadow from 'react-native-simple-shadow-view';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import { observer } from 'mobx-react-lite';
+import { messages, testing } from '../stores/store';
+import { feed, talk } from '../api/api';
+import { CommentStyles } from '../stores/styles';
+
+export default observer(() => {
+    const commentViewRef = useRef<ScrollView>(null);
+
+    const handleContentSizeChange = () => {
+        commentViewRef.current?.scrollToEnd({ animated: true });
+    };
+
+    useEffect(() => {
+        commentViewRef.current?.scrollToEnd({
+            animated: false
+        })
+
+        if (messages.list.length === 0) {
+            talk({
+                id: 0,
+                timestamp: 0,
+                message: "Hello there"
+            })
+        }
+    }, [])
+
+    return (
+        <>
+            {/* Message display area */}
+            <ScrollView
+                style={CommentStyles.commentView}
+                contentContainerStyle={{ alignItems: 'flex-end' }}
+                ref={commentViewRef}
+                onContentSizeChange={handleContentSizeChange}
+                onLayout={handleContentSizeChange}
+            >
+                <View style={CommentStyles.commentInnerScrollView}>
+                    {
+                        messages.list.map((x, i) =>
+                            <TouchableOpacity key={i} style={CommentStyles.commentBlock}>
+                                <TouchableOpacity style={x.from === 0 ? CommentStyles.commentUserAvatar : CommentStyles.commentSystemAvatar}>
+                                    {x.from === 0 ? // 0 == user
+                                        <FontAwesome5 name="user-alt" size={15} color="#fff" />
+                                        :
+                                        <MaterialCommunityIcons name="robot" size={20} color="#fff" />
+                                    }
+                                </TouchableOpacity>
+                                <Text style={CommentStyles.commentText}>{`${x.message}`}</Text>
+                            </TouchableOpacity>
+                        )
+                    }
+                </View>
+            </ScrollView>
+        </>
+    )
+})
