@@ -17,6 +17,14 @@ export const talk = (data) => {
             console.log(item.data.response)
         })
 }
+
+export const PassFrame = (data) => {
+    return fetch("post", "/receiveFrame", data)
+        .then((item) => {
+            console.log("Passed frame to backend.")
+        })
+}
+
 // export const restoreDogList = () => {
 //     return fetch("get", "/dog/getAllDogs")
 //         .then((res) => {
