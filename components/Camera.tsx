@@ -14,42 +14,41 @@ import { useResizePlugin } from 'vision-camera-resize-plugin';
 
 export default observer(() => {
     const { resize } = useResizePlugin();
-    let frameData: string | undefined = undefined;
     const device = useCameraDevice('back');
     const cameraRef = useRef<Camera>(null);
     const [base64, setBase64] = useState<String>("");
+    const [mat, setMat] = useState<Object | null>();
     
-        
     const setImage = useRunOnJS((data: string) => {
         setBase64(data);
     }, []);
     
-    let format = useCameraFormat(device, [{ videoResolution: { width: 500, height: 500 } }, { fps: 50 }])
+    let format = useCameraFormat(device, [
+        { videoResolution: { width: 500, height: 500 } }, { fps: 120 }
+    ])
 
     if (format) {
         format = {
             ...format,
             minFps: 1,
-            maxFps: 60
+            maxFps: 130
         };
     }
 
     const frameProcessor = useFrameProcessor((frame) => {
         'worklet';
         if (globalVariables.recording) {
-            const height = frame.height / 4;
-            const width = frame.width / 4;
-
             const resized = resize(frame, {
                 scale: {
-                    width: width,
-                    height: height,
+                    width: frame.width,
+                    height: frame.height,
                 },
                 pixelFormat: 'bgr',
                 dataType: 'uint8',
             });
 
-            const mat = OpenCV.frameBufferToMat(height, width, 3, resized);
+            const mat = OpenCV.frameBufferToMat(frame.height, frame.width, 3, resized);
+            console.log(typeof(mat))
             const buffer = OpenCV.toJSValue(mat);
             setImage(buffer.base64);
             OpenCV.clearBuffers(); 
@@ -58,24 +57,9 @@ export default observer(() => {
 
     useEffect(() => {
         PassFrame({
-            data: base64.toString()
+            data: base64
         })
     }, [base64])
-
-    const handleTakePhoto = async () => {
-        setInterval(async () => {
-            const photos = await cameraRef.current?.takePhoto();
-            const base64String = await RNFS.readFile(photos?.path ?? "", 'base64');
-
-            feed({
-                id: 0,
-                timestamp: 0,
-                footageFrame: base64String
-            })
-
-            // setPhoto(photos?.path.toString());
-        }, 1000)
-    };
 
     if (device == null) return <></>;
 
@@ -90,18 +74,20 @@ export default observer(() => {
                     format={format}
                     video={true}
                     frameProcessor={frameProcessor}
+                    outputOrientation="device"
                 />
             </View>
             {
-                testing.frame &&
-                <Image
-                    source={{
-                        // uri: "file://" + photo
-                        uri: testing.frame
-                    }}
-                    fadeDuration={0}
-                    style={StyleSheet.absoluteFill}
-                />
+                // testing.frame &&
+                // <Image
+                //     source={{
+                //         // uri: "file://" + photo
+                //         // uri: testing.frame
+                //         uri: `data:image/jpeg;base64,${base64}`
+                //     }}
+                //     fadeDuration={0}
+                //     style={StyleSheet.absoluteFill}
+                // />
             }
         </>
     )
