@@ -20,7 +20,7 @@ export default observer(() => {
         ]}>
             <View style={InputAreaStyles.inputStyle}>
                 <TextInput
-                    placeholder={`Message ...${globalVariables.recording}`}
+                    placeholder={`Message ...`}
                     style={InputAreaStyles.input}
                     onChangeText={onChangeText}
                     value={text}
