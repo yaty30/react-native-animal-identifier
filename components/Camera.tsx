@@ -8,12 +8,21 @@ import { observer } from 'mobx-react-lite';
 import { globalVariables, testing } from '../stores/store';
 import { feed, PassFrame } from '../api/api';
 import { runOnJS } from 'react-native-reanimated';
-import { Worklets } from 'react-native-worklets-core';
+import { useRunOnJS, Worklets } from 'react-native-worklets-core';
+import { ObjectType, OpenCV } from 'react-native-fast-opencv';
+import { useResizePlugin } from 'vision-camera-resize-plugin';
 
 export default observer(() => {
+    const { resize } = useResizePlugin();
     let frameData: string | undefined = undefined;
     const device = useCameraDevice('back');
     const cameraRef = useRef<Camera>(null);
+    const [base64, setBase64] = useState<String>("");
+    
+        
+    const setImage = useRunOnJS((data: string) => {
+        setBase64(data);
+    }, []);
     
     let format = useCameraFormat(device, [{ videoResolution: { width: 500, height: 500 } }, { fps: 50 }])
 
@@ -25,29 +34,33 @@ export default observer(() => {
         };
     }
 
-    const handleSetFrame = (data: Uint8Array) => {
-        'worklet';
-        frameData = data.toString()
-    }
-
     const frameProcessor = useFrameProcessor((frame) => {
         'worklet';
         if (globalVariables.recording) {
-            if (frame.pixelFormat === 'rgb') {
-                const buffer = frame.toArrayBuffer()
-                const data = new Uint8Array(buffer)
-                console.log(`Pixel at 0,0: RGB(${data[0]}, ${data[1]}, ${data[2]})`)
-                handleSetFrame(data)
-            }
+            const height = frame.height / 4;
+            const width = frame.width / 4;
+
+            const resized = resize(frame, {
+                scale: {
+                    width: width,
+                    height: height,
+                },
+                pixelFormat: 'bgr',
+                dataType: 'uint8',
+            });
+
+            const mat = OpenCV.frameBufferToMat(height, width, 3, resized);
+            const buffer = OpenCV.toJSValue(mat);
+            setImage(buffer.base64);
+            OpenCV.clearBuffers(); 
         }
     }, [globalVariables.recording]);
 
     useEffect(() => {
         PassFrame({
-            data: frameData
+            data: base64.toString()
         })
-        console.log("Passed.")
-    }, [frameData])
+    }, [base64])
 
     const handleTakePhoto = async () => {
         setInterval(async () => {
@@ -73,7 +86,7 @@ export default observer(() => {
                     style={StyleSheet.absoluteFill}
                     device={device} isActive={true}
                     photo={true} ref={cameraRef}
-                    pixelFormat="rgb"
+                    pixelFormat="yuv"
                     format={format}
                     video={true}
                     frameProcessor={frameProcessor}
