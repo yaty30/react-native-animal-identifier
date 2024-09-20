@@ -98,7 +98,10 @@ export default observer(() => {
                     left: frames.y,
                     width: frames.square_size,
                     height: frames.square_size,
-                    backgroundColor: 'pink'
+                    borderWidth: 3,
+                    borderColor: '#39FF14',
+                    backgroundColor: 'rgba(0, 0, 0, 0.25)'
+
                 }}    
             />
             {
