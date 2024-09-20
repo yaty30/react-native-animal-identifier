@@ -31,7 +31,7 @@ export default observer(() => {
                 console.log(`Pixel at 0,0: RGB(${data[0]}, ${data[1]}, ${data[2]})`)
             }
         }
-    }, []);
+    }, [globalVariables.recording]);
 
     const handleTakePhoto = async () => {
         setInterval(async () => {
