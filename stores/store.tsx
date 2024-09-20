@@ -65,3 +65,34 @@ export const globalVariables = types
         recording: false,
         keyboardTrigger: false
     })
+
+interface FrameSkiaProps {
+    x: number;
+    y: number;
+    square_size: number;
+}
+
+export const frames = types
+    .model({
+        x: types.number,
+        y: types.number,
+        square_size: types.number
+    })
+    .actions(self => ({
+        setFrameSkia(item: FrameSkiaProps) {
+            'worklet';
+            self.x = item.x;
+            self.y = item.y;
+            self.square_size = item.square_size;
+        },
+        clear() {
+            self.x = -1
+            self.y = -1
+            self.square_size = -1
+        }
+    }))
+    .create({
+        x: -1,
+        y: -1,
+        square_size: -1
+    })

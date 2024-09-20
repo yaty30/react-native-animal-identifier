@@ -1,10 +1,10 @@
 import { fetch } from './fetch'
+import { frames } from '../stores/store'
 
 import { testing, messages } from '../stores/store'
 export const feed = (data) => {
     return fetch("post", "/streamFeed", data)
         .then((item) => {
-            console.log(item.data.footageFrame)
             testing.setFrame(item.data.footageFrame)
             return item.data
         })
@@ -14,14 +14,14 @@ export const talk = (data) => {
     return fetch("post", "/talk", data)
         .then((item) => {
             messages.newMessage(item.data)
-            console.log(item.data.response)
         })
 }
 
 export const PassFrame = (data) => {
     return fetch("post", "/receiveFrame", data)
         .then((item) => {
-            console.log("Passed frame to backend.")
+            frames.setFrameSkia(item.data)
+            return item
         })
 }
 

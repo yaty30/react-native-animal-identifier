@@ -1,8 +1,11 @@
 import axios from "axios";
 // import * as https from 'https';
 
-const host = "http://192.168.0.188:8000"
-// const host = "http://192.168.50.36:8000"
+// const host = "http://192.168.110.189"
+// const host = "http://192.168.0.188"
+const host = "http://192.168.50.36"
+
+const port = 8000
 
 export const fetch = async (method, url, body) => {
     const mainFetch = async () => {
@@ -10,7 +13,7 @@ export const fetch = async (method, url, body) => {
         if (method === "post") {
             return axios({
                 method: 'post',
-                url: host + url,
+                url: host + ":" + port + url,
                 data: body,
             }).then(res => res)
         } else {
