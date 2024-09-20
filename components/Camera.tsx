@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 // import Shadow from 'react-native-simple-shadow-view';
 import RNFS from 'react-native-fs';
 
@@ -44,14 +44,6 @@ export default observer(() => {
         };
     }
 
-    const updateRectangleRegion = useRunOnJS((x: number, y: number, size: number, ) => {
-        frameX.current = x;
-        frameY.current = y;
-        squareSize.current = size;
-
-        console.log(frameX.current, frameY.current, squareSize.current)
-    }, [])
-
     const p = useSkiaFrameProcessor((frame) => {
         'worklet'
         const faces = SkiaRectangleRegion(frame)
@@ -75,23 +67,13 @@ export default observer(() => {
             const buffer = OpenCV.toJSValue(mat);
             setImage(buffer.base64);
             OpenCV.clearBuffers();
-
-            updateRectangleRegion(frames.x, frames.y, frames.square_size)
-    
-            if (frameX.current > -1) {
-                const rect = Skia.XYWHRect(frameX.current, frameY.current, squareSize.current, squareSize.current);
-                const paint = Skia.Paint();
-                paint.setColor(Skia.Color('pink'));
-                frame.drawRect(rect, paint);
-            }
         }
-    }, [globalVariables.recording, frames]);
+    }, [globalVariables.recording]);
 
     useEffect(() => {
         PassFrame({
             data: base64
         })
-        
     }, [base64])
     
 
@@ -108,6 +90,16 @@ export default observer(() => {
                 video={true}
                 frameProcessor={frameProcessor}
                 outputOrientation="device"
+            />
+            <TouchableOpacity
+                style={{
+                    position: 'absolute',
+                    top: frames.x,
+                    left: frames.y,
+                    width: frames.square_size,
+                    height: frames.square_size,
+                    backgroundColor: 'pink'
+                }}    
             />
             {
                 // testing.frame &&
