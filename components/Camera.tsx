@@ -33,7 +33,8 @@ export default observer(() => {
     }, []);
 
     let format = useCameraFormat(device, [
-        { fps: 100 }
+        { fps: 100 },
+        { videoResolution: "max" }
     ])
 
     if (format) {
@@ -46,9 +47,31 @@ export default observer(() => {
 
     const p = useSkiaFrameProcessor((frame) => {
         'worklet'
-        const faces = SkiaRectangleRegion(frame)
-        console.log(`Faces in Frame: ${faces}`)
-    }, [])
+        frame.render();
+        if (globalVariables.recording) {
+            const resized = resize(frame, {
+                scale: {
+                    width: frame.width / 8,
+                    height: frame.height / 8,
+                },
+                pixelFormat: 'bgr',
+                dataType: 'uint8',
+            });
+
+            const mat = OpenCV.frameBufferToMat(frame.height / 8, frame.width / 8, 3, resized);
+            const buffer = OpenCV.toJSValue(mat);
+            let res = SkiaRectangleRegion(frame, buffer.base64)
+
+            OpenCV.clearBuffers();
+
+            res = JSON.parse(res);
+            const rect = Skia.XYWHRect(res.x, res.y, res.square_size, res.square_size);
+            const paint = Skia.Paint();
+            paint.setColor(Skia.Color('pink'));
+            frame.drawRect(rect, paint);
+        }
+    }, [globalVariables.recording]);
+
 
     const frameProcessor = useSkiaFrameProcessor((frame) => {
         'worklet';
@@ -88,7 +111,7 @@ export default observer(() => {
                 pixelFormat="yuv"
                 format={format}
                 video={true}
-                frameProcessor={frameProcessor}
+                frameProcessor={p}
                 outputOrientation="device"
             />
             <TouchableOpacity

@@ -6,8 +6,16 @@ const plugin = VisionCameraProxy.initFrameProcessorPlugin('SkiaRectangleRegion',
 /**
  * Scans faces.
  */
-export function SkiaRectangleRegion(frame: Frame): any {
+
+type ParameterType = { key: string; value: any }; // Define ParameterType
+
+export function SkiaRectangleRegion(frame: Frame, bitmap: string): any {
     'worklet'
     if (plugin == null) throw new Error('Failed to load Frame Processor Plugin "scanFaces"!')
-    return plugin.call(frame)
+
+    let params: Record<string, ParameterType> = {
+        param1: { key: 'bitmap', value: bitmap },
+    };
+
+    return plugin.call(frame, params)
 }
