@@ -20,7 +20,7 @@ interface DescriptionCardProps {
 }
 
 const getBorderColor = (confident: number) => {
-    if(confident > 0.8) {
+    if(confident >= 0.8) {
         return '#39FF14'; // neon green
     } else if(confident > 0.6 && confident < 0.8) {
         return '#FFF700'; // lemon

@@ -72,6 +72,9 @@ export default observer(() => {
         globalVariables.initialLoading ?
             <View style={MainLoadingView.container}>
                 <ProgressBar color="white" />
+                <Text>
+                    Initialising...
+                </Text>
             </View>
             :
             <MainView />

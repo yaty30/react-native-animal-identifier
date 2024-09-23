@@ -57,7 +57,7 @@ export const globalVariables = types
         recording: types.boolean,
         keyboardTrigger: types.boolean,
         messageLoading: types.boolean,
-        initialLoading: types.boolean
+        initialLoading: types.boolean,
     })
     .actions(self => ({
         setRecording(recording: boolean) {

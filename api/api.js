@@ -15,10 +15,15 @@ export const talk = (data) => {
     return fetch("post", "/talk", data)
         .then((item) => {
             globalVariables.setMessageLoad(false)
-            globalVariables.setInitialLoad(false)
             if (item && item.data) {
                 messages.newMessage(item.data)
             }
+            globalVariables.setInitialLoad(false)
+        })
+        .catch((e) => {
+            console.error(e)
+            globalVariables.setMessageLoad(false)
+            globalVariables.setInitialLoad(false)
         })
 }
 
