@@ -1,5 +1,5 @@
 import { fetch } from './fetch'
-import { frames } from '../stores/store'
+import { objects } from '../stores/store'
 
 import { testing, messages } from '../stores/store'
 export const feed = (data) => {
@@ -13,14 +13,19 @@ export const feed = (data) => {
 export const talk = (data) => {
     return fetch("post", "/talk", data)
         .then((item) => {
-            messages.newMessage(item.data)
+        if (item && item.data) {
+                messages.newMessage(item.data)
+           }
         })
 }
 
 export const PassFrame = (data) => {
     return fetch("post", "/receiveFrame", data)
         .then((item) => {
-            frames.setFrameSkia(item.data)
+            console.log(JSON.stringify(item))
+            if (item && item.data) {
+                objects.setFrameSkia(item.data)
+            }
             return item
         })
 }
