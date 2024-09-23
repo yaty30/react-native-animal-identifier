@@ -1,5 +1,4 @@
 import axios from "axios";
-// import * as https from 'https';
 
 // const host = "http://192.168.110.189"
 const host = "http://192.168.0.188"

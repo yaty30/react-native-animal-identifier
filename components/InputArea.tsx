@@ -1,13 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, TextInput, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, ScrollView, Image } from 'react-native';
-// import Shadow from 'react-native-simple-shadow-view';
+import React, { useState } from 'react';
+import { View, TouchableOpacity, TextInput, Keyboard } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { observer } from 'mobx-react-lite';
 import { messages, globalVariables } from '../stores/store';
-import { feed, talk } from '../api/api';
+import { talk } from '../api/api';
 import { InputAreaStyles } from '../stores/styles';
 
 export default observer(() => {
@@ -54,9 +51,7 @@ export default observer(() => {
                 >
                     <Feather name="send"
                         size={24}
-                        style={{
-                            color: '#fefefe'
-                        }}
+                        style={InputAreaStyles.sendButtonIcon}
                     />
                 </TouchableOpacity>
             </View>
@@ -76,12 +71,8 @@ export default observer(() => {
             >
                 <Feather
                     name={globalVariables.recording ? "pause" : "play"}
+                    style={InputAreaStyles.recordButtonIcon}
                     size={24}
-                    style={{
-                        color: '#fefefe',
-                        textAlignVertical: 'center', // Align the text vertically centered
-                        lineHeight: 60, // Set line height to match the TouchableOpacity height
-                    }}
                 />
             </TouchableOpacity>
         </View>

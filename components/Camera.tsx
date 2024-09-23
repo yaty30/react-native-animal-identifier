@@ -1,21 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, View, Modal, TouchableOpacity, Text, Pressable } from 'react-native';
-// import Shadow from 'react-native-simple-shadow-view';
-import RNFS from 'react-native-fs';
+import { StyleSheet } from 'react-native';
 
 import {
-    Camera, useCameraDevice, useCameraFormat, useFrameProcessor, useSkiaFrameProcessor,
-    VisionCameraProxy, Frame
+    Camera, useCameraDevice, useCameraFormat, 
+    useSkiaFrameProcessor
 } from 'react-native-vision-camera';
 import { observer } from 'mobx-react-lite';
 import { globalVariables, objects } from '../stores/store';
 import DescriptionCard from './DescriptionCard';
-import { feed, PassFrame } from '../api/api';
-import { useRunOnJS, Worklets } from 'react-native-worklets-core';
-import { ObjectType, OpenCV } from 'react-native-fast-opencv';
+import { PassFrame } from '../api/api';
+import { useRunOnJS } from 'react-native-worklets-core';
+import { OpenCV } from 'react-native-fast-opencv';
 import { useResizePlugin } from 'vision-camera-resize-plugin';
-import { Skia } from '@shopify/react-native-skia';
-import { SkiaRectangleRegion } from '../frameprocessors/vision-camera-skia-rectangle-region';
+
+// Self-made frame processor -- Not in use
+// import { Skia } from '@shopify/react-native-skia';
+// import { SkiaRectangleRegion } from '../frameprocessors/vision-camera-skia-rectangle-region';
 
 export default observer(() => {
     const { resize } = useResizePlugin();
@@ -23,7 +23,8 @@ export default observer(() => {
     const cameraRef = useRef<Camera>(null);
     const [base64, setBase64] = useState<String>("");
 
-    const plugin = VisionCameraProxy.initFrameProcessorPlugin('SkiaRectangleRegion', { model: 'fast' })
+    // Self-made frame processor -- Not in use
+    // const plugin = VisionCameraProxy.initFrameProcessorPlugin('SkiaRectangleRegion', { model: 'fast' })
 
     const setImage = useRunOnJS((data: string) => {
         setBase64(data);
@@ -43,7 +44,7 @@ export default observer(() => {
         };
     }
 
-    const p = useSkiaFrameProcessor((frame) => {
+    const frameprocessor = useSkiaFrameProcessor((frame) => {
         'worklet'
         frame.render();
         const times = 8;
@@ -65,7 +66,6 @@ export default observer(() => {
         }
     }, [globalVariables.recording]);
 
-
     useEffect(() => {
         PassFrame({
             data: base64
@@ -74,7 +74,6 @@ export default observer(() => {
 
 
     if (device == null) return <></>;
-
 
     return (
         <>
@@ -85,7 +84,7 @@ export default observer(() => {
                 pixelFormat="yuv"
                 format={format}
                 video={true}
-                frameProcessor={p}
+                frameProcessor={frameprocessor}
                 outputOrientation="device"
             />
             {

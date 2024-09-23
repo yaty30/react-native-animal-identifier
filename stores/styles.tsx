@@ -87,6 +87,14 @@ const InputAreaStyles = StyleSheet.create({
         paddingTop: 13,
         marginTop: 10,
         marginBottom: 10
+    },
+    recordButtonIcon: {
+        color: '#fefefe',
+        textAlignVertical: 'center',
+        lineHeight: 60,
+    },
+    sendButtonIcon: {
+        color: '#fefefe'
     }
 });
 
