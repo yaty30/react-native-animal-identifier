@@ -207,6 +207,7 @@ const DetectedObject = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.2)'
     },
     objectTitle: {
+        fontSize: 11,
         position: 'absolute',
         bottom: 0,
         backgroundColor: 'rgba(25, 25, 25, 0.55)',
