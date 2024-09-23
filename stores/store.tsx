@@ -37,6 +37,10 @@ export const messages = types
             item.id = self.list.length;
             console.log(item);
             self.list.push(item);
+        },
+        stopLoading() {
+            const index = self.list.findIndex(x => x.from === 2)
+            self.list.slice(index, 1)
         }
     }))
     .views(self => ({
@@ -51,7 +55,9 @@ export const messages = types
 export const globalVariables = types
     .model({
         recording: types.boolean,
-        keyboardTrigger: types.boolean
+        keyboardTrigger: types.boolean,
+        messageLoading: types.boolean,
+        initialLoading: types.boolean
     })
     .actions(self => ({
         setRecording(recording: boolean) {
@@ -60,10 +66,18 @@ export const globalVariables = types
         setKeyboardTrigger(keyboardTrigger: boolean) {
             self.keyboardTrigger = keyboardTrigger
         },
+        setMessageLoad(loading: boolean) {
+            self.messageLoading = loading
+        },
+        setInitialLoad(loading: boolean) {
+            self.initialLoading = loading
+        }
     }))
     .create({
         recording: false,
-        keyboardTrigger: false
+        keyboardTrigger: false,
+        messageLoading: false,
+        initialLoading: false
     })
 
 interface ObjectDetailsPropos {

@@ -4,7 +4,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { observer } from 'mobx-react-lite';
-import { messages } from '../stores/store';
+import { globalVariables, messages } from '../stores/store';
 import { talk } from '../api/api';
 import { CommentStyles } from '../stores/styles';
 
@@ -21,6 +21,7 @@ export default observer(() => {
         })
 
         if (messages.list.length === 0) {
+            globalVariables.setInitialLoad(true)
             talk({
                 id: 0,
                 timestamp: 0,

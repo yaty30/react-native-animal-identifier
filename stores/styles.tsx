@@ -95,7 +95,10 @@ const InputAreaStyles = StyleSheet.create({
     },
     sendButtonIcon: {
         color: '#fefefe'
-    }
+    },
+    progressBar: {
+        height: 30, // Adjust height
+    },
 });
 
 const CommentStyles = StyleSheet.create({
@@ -225,7 +228,15 @@ const DetectedObject = StyleSheet.create({
     }
 })
 
+const MainLoadingView = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    }
+})
+
 export {
     MainStyles, InputAreaStyles, CommentStyles, ObjectModal,
-    DetectedObject
+    DetectedObject, MainLoadingView
 }

@@ -1,5 +1,5 @@
 import { fetch } from './fetch'
-import { objects } from '../stores/store'
+import { globalVariables, objects } from '../stores/store'
 
 import { testing, messages } from '../stores/store'
 export const feed = (data) => {
@@ -11,11 +11,14 @@ export const feed = (data) => {
 }
 
 export const talk = (data) => {
+    globalVariables.setMessageLoad(true)
     return fetch("post", "/talk", data)
         .then((item) => {
-        if (item && item.data) {
+            globalVariables.setMessageLoad(false)
+            globalVariables.setInitialLoad(false)
+            if (item && item.data) {
                 messages.newMessage(item.data)
-           }
+            }
         })
 }
 

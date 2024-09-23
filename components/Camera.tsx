@@ -2,12 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 
 import {
-    Camera, useCameraDevice, useCameraFormat, 
+    Camera, useCameraDevice, useCameraFormat,
     useSkiaFrameProcessor
 } from 'react-native-vision-camera';
 import { observer } from 'mobx-react-lite';
-import { globalVariables, objects } from '../stores/store';
-import DescriptionCard from './DescriptionCard';
+import { globalVariables } from '../stores/store';
 import { PassFrame } from '../api/api';
 import { useRunOnJS } from 'react-native-worklets-core';
 import { OpenCV } from 'react-native-fast-opencv';
@@ -76,30 +75,15 @@ export default observer(() => {
     if (device == null) return <></>;
 
     return (
-        <>
-            <Camera
-                style={StyleSheet.absoluteFill}
-                device={device} isActive={true}
-                photo={true} ref={cameraRef}
-                pixelFormat="yuv"
-                format={format}
-                video={true}
-                frameProcessor={frameprocessor}
-                outputOrientation="device"
-            />
-            {
-                objects.data.map((object, index) =>
-                    <DescriptionCard
-                        key={index}
-                        x={object.x}
-                        y={object.y}
-                        width={object.width}
-                        height={object.height}
-                        object={object.object}
-                        confident={object.confident}
-                    />
-                )
-            }
-        </>
+        <Camera
+            style={StyleSheet.absoluteFill}
+            device={device} isActive={true}
+            photo={true} ref={cameraRef}
+            pixelFormat="yuv"
+            format={format}
+            video={true}
+            frameProcessor={frameprocessor}
+            outputOrientation="device"
+        />
     )
 })
