@@ -66,33 +66,73 @@ export const globalVariables = types
         keyboardTrigger: false
     })
 
-interface FrameSkiaProps {
-    x: number;
-    y: number;
-    square_size: number;
+interface ObjectDetailsPropos {
+    title: string;
+    description: string;
 }
 
-export const frames = types
+interface ObjectPropos {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    object: ObjectDetailsPropos;
+    confident: number;
+}
+
+const objectDetails = types
+    .model({
+        title: types.string,
+        description: types.string
+    })
+
+const object = types
     .model({
         x: types.number,
         y: types.number,
-        square_size: types.number
+        width: types.number,
+        height: types.number,
+        object: objectDetails,
+        confident: types.number
+    })
+
+export const objects = types
+    .model({
+        data: types.array(object)
     })
     .actions(self => ({
-        setFrameSkia(item: FrameSkiaProps) {
+        setFrameSkia(item: ObjectPropos[]) {
             'worklet';
-            self.x = item.x;
-            self.y = item.y;
-            self.square_size = item.square_size;
+            self.data.clear()
+            item.forEach(object => self.data.push(object))
         },
         clear() {
-            self.x = -1
-            self.y = -1
-            self.square_size = -1
-        }
+            self.data.clear()
+        },
     }))
     .create({
-        x: -1,
-        y: -1,
-        square_size: -1
-    })
+        data: [
+            {
+                x: 150,
+                y: 43,
+                width: 100,
+                height: 100,
+                object: { 
+                    title: 'Clownfish', 
+                    description: 'The clownfish can be many different colours, depending on its species, including yellow, orange, red, and black. Most have white details. They are smaller fish, with the smallest around 7 to 8cm long and the longest 17cm long.' 
+                },
+                confident: 0.86
+            },
+            {
+                x: 393,
+                y: 120,
+                width: 121,
+                height: 121,
+                object: { 
+                    title: 'Blue Tang', 
+                    description: 'Blue tangs are high-bodied, compressed, pancake-shaped fishes with pointed snouts and small scales. Their eyes are located high on their heads and their mouths are small and positioned low. Their dorsal fins are continuous.' 
+                },
+                confident: 0.6
+            },
+        ]
+    });
