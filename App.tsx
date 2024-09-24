@@ -7,17 +7,19 @@ import { globalVariables, objects } from './stores/store';
 import { MainLoadingView, MainStyles } from './stores/styles';
 
 import Home from './components/Home';
+import Welcoming from './components/Welcoming';
 
 export default observer(() => {
     return (
-        globalVariables.initialLoading ?
-            <View style={MainLoadingView.container}>
-                <ProgressBar color="white" />
-                <Text>
-                    Initialising...
-                </Text>
-            </View>
-            :
-            <Home />
+        // globalVariables.initialLoading ?
+        //     <View style={MainLoadingView.container}>
+        //         <ProgressBar color="white" />
+        //         <Text>
+        //             Initialising...
+        //         </Text>
+        //     </View>
+        //     :
+        //     <Home />
+        <Welcoming />
     )
 })
