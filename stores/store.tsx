@@ -57,6 +57,7 @@ export const globalVariables = types
         keyboardTrigger: types.boolean,
         messageLoading: types.boolean,
         initialLoading: types.boolean,
+        nameLoading: types.boolean,
         firstTime: types.boolean
     })
     .actions(self => ({
@@ -72,6 +73,9 @@ export const globalVariables = types
         setInitialLoad(loading: boolean) {
             self.initialLoading = loading
         },
+        setNameLoading(loading: boolean) {
+            self.nameLoading = loading
+        },
         setFirstTime(firstTime: boolean) {
             self.firstTime = firstTime
         }
@@ -81,6 +85,7 @@ export const globalVariables = types
         keyboardTrigger: false,
         messageLoading: false,
         initialLoading: false,
+        nameLoading: false,
         firstTime: false
     })
 

@@ -13,6 +13,8 @@ export default observer(() => {
             if (value == null) {
                 globalVariables.setInitialLoad(false)
                 globalVariables.setFirstTime(true)
+            } else {
+                globalVariables.setInitialLoad(true)
             }
         } catch (e) {
             console.error(e)
@@ -25,7 +27,7 @@ export default observer(() => {
     }, [])
 
     return (
-        globalVariables.firstTime?
+        globalVariables.firstTime || globalVariables.initialLoading?
             <Welcoming />
             :
             <Home />
