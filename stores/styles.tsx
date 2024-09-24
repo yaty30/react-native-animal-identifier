@@ -236,7 +236,56 @@ const MainLoadingView = StyleSheet.create({
     }
 })
 
+
+const WelcomeView = StyleSheet.create({
+    mainContainer: {
+        backgroundColor: '#fff'
+    },
+    container: {
+        position: 'absolute',
+    },
+    initialiseText: {
+        color: '#000',
+        textAlign: 'center',
+        fontWeight: 'bold',
+    },
+    welcome: {
+        width: 150,
+        height: 50
+    },
+    inputContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignContent: 'center',
+        height: '100%',
+    },
+    inputView: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+    },
+    icon: {
+        color: '#fdfdfd',
+        textAlign: 'center',
+        backgroundColor: 'rgba(113, 215, 97, 0.85)',
+        borderRadius: 50,
+        padding: 5
+    },
+    input: {
+        height: 40,
+        width: '70%',
+        margin: 12,
+        borderWidth: 1,
+        textAlign: 'center',
+        display: 'flex',
+        color: '#191919',
+        backgroundColor: 'rgba(255, 255, 255, 0.85)',
+        borderRadius: 50,
+    },
+});
+
 export {
     MainStyles, InputAreaStyles, CommentStyles, ObjectModal,
-    DetectedObject, MainLoadingView
+    DetectedObject, MainLoadingView, WelcomeView
 }

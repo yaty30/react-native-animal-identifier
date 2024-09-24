@@ -7,6 +7,7 @@ import AnimatedAnimals from './AnimatedAnimals';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ProgressBar } from '@react-native-community/progress-bar-android';
 import { globalVariables } from '../stores/store';
+import { WelcomeView } from '../stores/styles';
 import Feather from 'react-native-vector-icons/Feather';
 
 const paths = [
@@ -66,7 +67,7 @@ interface AnimationProps {
 
 const Animation = ({ size, seq }: AnimationProps) => {
     return (
-        <View style={styles.container}>
+        <View style={WelcomeView.container}>
             {shuffleArray(paths).map((path: any, index: number) => {
                 const latency = seq % 2 == 0 ? 1500 : 0;
                 const values = getRandomValues(latency);
@@ -111,23 +112,23 @@ export default observer(() => {
     };
 
     return (
-        <View style={styles.mainContainer}>
+        <View style={WelcomeView.mainContainer}>
             {Array.from({ length: 2 }).map((_, i) =>
                 <Animation key={i} size={4 * i + 1} seq={i + 1} />
             )}
-            <View style={styles.inputContainer}>
+            <View style={WelcomeView.inputContainer}>
                 {globalVariables.initialLoading ?
                     <View>
                         <ProgressBar color="#9514E8" />
-                        <Text style={styles.initialiseText}>
+                        <Text style={WelcomeView.initialiseText}>
                             Initialising...
                         </Text>
                     </View>
                     :
-                    <View style={styles.inputView}>
-                        <Image source={require("../assets/welcome.png")} style={styles.welcome} />
+                    <View style={WelcomeView.inputView}>
+                        <Image source={require("../assets/welcome.png")} style={WelcomeView.welcome} />
                         <TextInput
-                            style={styles.input}
+                            style={WelcomeView.input}
                             onChangeText={handleNameChange}
                             value={name}
                             placeholder="Hi, what's your name?"
@@ -141,7 +142,7 @@ export default observer(() => {
                                     <Feather
                                         name="check"
                                         size={24}
-                                        style={styles.icon}
+                                        style={WelcomeView.icon}
                                     />
                                 }
                             </TouchableOpacity>
@@ -152,51 +153,3 @@ export default observer(() => {
         </View>
     );
 })
-
-const styles = StyleSheet.create({
-    mainContainer: {
-        backgroundColor: '#fff'
-    },
-    container: {
-        position: 'absolute',
-    },
-    initialiseText: {
-        color: '#000',
-        textAlign: 'center',
-        fontWeight: 'bold',
-    },
-    welcome: {
-        width: 150,
-        height: 50
-    },
-    inputContainer: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignContent: 'center',
-        height: '100%',
-    },
-    inputView: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100%',
-    },
-    icon: {
-        color: '#fdfdfd',
-        textAlign: 'center',
-        backgroundColor: 'rgba(113, 215, 97, 0.85)',
-        borderRadius: 50,
-        padding: 5
-    },
-    input: {
-        height: 40,
-        width: '70%',
-        margin: 12,
-        borderWidth: 1,
-        textAlign: 'center',
-        display: 'flex',
-        color: '#191919',
-        backgroundColor: 'rgba(255, 255, 255, 0.85)',
-        borderRadius: 50,
-    },
-});
