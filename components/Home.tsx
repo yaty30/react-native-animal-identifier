@@ -9,17 +9,27 @@ import Camera from '../components/Camera';
 import Comment from '../components/Comment';
 import InputArea from '../components/InputArea';
 import DescriptionCard from '../components/DescriptionCard';
-import { Retrieve } from '../stores/asyncStorage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default observer(() => {
     const [user, setUser] = useState<string>("");
     const handleContainerPress = () => {
         Keyboard.dismiss();
     };
-    
+
+    const getData = async () => {
+        try {
+            const value = await AsyncStorage.getItem('username');
+            if (value != null) {
+                setUser(value);
+            }
+        } catch (e) {
+        }
+    };
+
     useEffect(() => {
-        const value: any = Retrieve('username')
-        setUser(value)
+        getData()
     }, [])
 
     return (
