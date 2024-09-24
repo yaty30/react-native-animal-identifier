@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import { Image, TextInput } from 'react-native';
+import { Image, Text, TextInput, TouchableOpacity } from 'react-native';
 import { View, Animated, StyleSheet } from 'react-native';
 import { observer } from 'mobx-react-lite';
 
 import AnimatedAnimals from './AnimatedAnimals';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ProgressBar } from '@react-native-community/progress-bar-android';
+import { globalVariables } from '../stores/store';
+import Feather from 'react-native-vector-icons/Feather';
 
 const paths = [
     require('../assets/animal_icons/1.png'),
@@ -83,19 +87,66 @@ const Animation = ({ size, seq }: AnimationProps) => {
 
 export default observer(() => {
     const [name, setName] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const handleNameChange = (text: any) => {
+        setName(text)
+    }
+
+    const storeData = async () => {
+        try {
+            await AsyncStorage.setItem('username', name);
+            setLoading(true)
+            globalVariables.setInitialLoad(true)
+
+            setInterval(() => {
+                globalVariables.setInitialLoad(false)
+                globalVariables.setFirstTime(false)
+                setLoading(false)
+            }, 1500)
+
+        } catch (e) {
+            console.error("error on storing data.");
+        }
+    };
+
     return (
         <View style={styles.mainContainer}>
             {Array.from({ length: 2 }).map((_, i) =>
                 <Animation key={i} size={4 * i + 1} seq={i + 1} />
             )}
             <View style={styles.inputContainer}>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setName}
-                    value={name}
-                    placeholder="Hi, what's your name?"
-                    placeholderTextColor="#9514E8"
-                />
+                {globalVariables.initialLoading ?
+                    <View>
+                        <ProgressBar color="#9514E8" />
+                        <Text style={styles.initialiseText}>
+                            Initialising...
+                        </Text>
+                    </View>
+                    :
+                    <View style={styles.inputView}>
+                        <TextInput
+                            style={styles.input}
+                            onChangeText={handleNameChange}
+                            value={name}
+                            placeholder="Hi, what's your name?"
+                            placeholderTextColor="#9514E8"
+                        />
+                        {name.length > 0 &&
+                            <TouchableOpacity onPress={storeData}>
+                                {loading ?
+                                    <ProgressBar color="#9514E8" style={{height: 20}} />
+                                    :
+                                    <Feather
+                                        name="check"
+                                        size={24}
+                                        style={styles.icon}
+                                    />
+                                }
+                            </TouchableOpacity>
+                        }
+                    </View>
+                }
             </View>
         </View>
     );
@@ -108,19 +159,33 @@ const styles = StyleSheet.create({
     container: {
         position: 'absolute',
     },
+    initialiseText: {
+        color: '#000',
+        textAlign: 'center',
+        fontWeight: 'bold',
+    },
     inputContainer: {
         display: 'flex',
         justifyContent: 'center',
         alignContent: 'center',
         height: '100%',
-        paddingLeft: 50,
-        paddingRight: 50
+    },
+    inputView: {
+        paddingLeft: 30,
+        paddingRight: 30
+    },
+    icon: {
+        color: '#fdfdfd',
+        textAlign: 'center',
+        backgroundColor: 'rgba(113, 215, 97, 0.85)',
+        borderRadius: 50,
+        marginLeft: 10,
+        marginRight: 10
     },
     input: {
         height: 40,
         margin: 12,
         borderWidth: 1,
-        padding: 10,
         textAlign: 'center',
         display: 'flex',
         color: '#191919',

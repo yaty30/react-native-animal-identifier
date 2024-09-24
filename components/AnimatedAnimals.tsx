@@ -27,7 +27,7 @@ const AnimatedAnimals = observer(({ duration, outputRange, imagePath, margin }: 
             alignItems: 'flex-start',
         },
         image: {
-            opacity: 0.35,
+            opacity: 0.15,
             marginTop: margin
         }
     });

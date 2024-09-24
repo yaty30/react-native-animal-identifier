@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 
 import { observer } from 'mobx-react-lite';
@@ -9,12 +9,28 @@ import Camera from '../components/Camera';
 import Comment from '../components/Comment';
 import InputArea from '../components/InputArea';
 import DescriptionCard from '../components/DescriptionCard';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default observer(() => {
+    const [user, setUser] = useState<string>("");
     const handleContainerPress = () => {
         Keyboard.dismiss();
     };
+
+    const getData = async () => {
+        try {
+            const value = await AsyncStorage.getItem('username');
+            if (value != null) {
+                setUser(value);
+            }
+        } catch (e) {
+        }
+    };
+
+    useEffect(() => {
+        getData()
+    }, [])
 
     return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -39,7 +55,7 @@ export default observer(() => {
                         <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', width: '100%' }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <TouchableOpacity style={MainStyles.avatar}></TouchableOpacity>
-                                <Text style={MainStyles.name}>Name</Text>
+                                <Text style={MainStyles.name}>{user}</Text>
                             </View>
                             <TouchableOpacity
                                 style={[

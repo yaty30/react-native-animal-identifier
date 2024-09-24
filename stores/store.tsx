@@ -21,7 +21,6 @@ const message = types
         from: types.number
     })
 
-
 interface NewMessageProps {
     id: number;
     message: string;
@@ -58,6 +57,7 @@ export const globalVariables = types
         keyboardTrigger: types.boolean,
         messageLoading: types.boolean,
         initialLoading: types.boolean,
+        firstTime: types.boolean
     })
     .actions(self => ({
         setRecording(recording: boolean) {
@@ -71,13 +71,17 @@ export const globalVariables = types
         },
         setInitialLoad(loading: boolean) {
             self.initialLoading = loading
+        },
+        setFirstTime(firstTime: boolean) {
+            self.firstTime = firstTime
         }
     }))
     .create({
         recording: false,
         keyboardTrigger: false,
         messageLoading: false,
-        initialLoading: false
+        initialLoading: false,
+        firstTime: false
     })
 
 interface ObjectDetailsPropos {
