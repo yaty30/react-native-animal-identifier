@@ -125,6 +125,7 @@ export default observer(() => {
                     </View>
                     :
                     <View style={styles.inputView}>
+                        <Image source={require("../assets/welcome.png")} style={styles.welcome} />
                         <TextInput
                             style={styles.input}
                             onChangeText={handleNameChange}
@@ -164,6 +165,10 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontWeight: 'bold',
     },
+    welcome: {
+        width: 150,
+        height: 50
+    },
     inputContainer: {
         display: 'flex',
         justifyContent: 'center',
@@ -171,19 +176,21 @@ const styles = StyleSheet.create({
         height: '100%',
     },
     inputView: {
-        paddingLeft: 30,
-        paddingRight: 30
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
     },
     icon: {
         color: '#fdfdfd',
         textAlign: 'center',
         backgroundColor: 'rgba(113, 215, 97, 0.85)',
         borderRadius: 50,
-        marginLeft: 10,
-        marginRight: 10
+        padding: 5
     },
     input: {
         height: 40,
+        width: '70%',
         margin: 12,
         borderWidth: 1,
         textAlign: 'center',

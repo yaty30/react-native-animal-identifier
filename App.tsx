@@ -10,7 +10,7 @@ export default observer(() => {
     const getData = async () => {
         try {
             const value = await AsyncStorage.getItem('username');
-            if (value == null) {
+            if (value == null || value.length == 0) {
                 globalVariables.setInitialLoad(false)
                 globalVariables.setFirstTime(true)
             } else {
@@ -21,8 +21,18 @@ export default observer(() => {
         }
     };
 
+    const debug = async () => {
+        try {
+            console.log("DEBUG TESTING")
+            await AsyncStorage.setItem('username', "");
+        } catch (e) {
+            console.error("error on storing data.");
+        }
+    };
+
 
     useEffect(() => {
+        debug()
         getData()
     }, [])
 
