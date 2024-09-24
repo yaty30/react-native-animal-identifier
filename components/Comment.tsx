@@ -20,7 +20,7 @@ export default observer(() => {
             animated: false
         })
 
-        if (messages.list.length === 0) {
+        if (messages.list.length === 0 && !globalVariables.firstTime) {
             globalVariables.setInitialLoad(true)
             talk({
                 id: 0,

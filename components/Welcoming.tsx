@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { Image, Text, TextInput, TouchableOpacity } from 'react-native';
 import { View, Animated, StyleSheet } from 'react-native';
 import { observer } from 'mobx-react-lite';
@@ -10,7 +10,7 @@ import { globalVariables } from '../stores/store';
 import { WelcomeView } from '../stores/styles';
 import Feather from 'react-native-vector-icons/Feather';
 
-const paths = [
+const allIcons = [
     require('../assets/animal_icons/1.png'),
     require('../assets/animal_icons/2.png'),
     require('../assets/animal_icons/3.png'),
@@ -24,11 +24,29 @@ const paths = [
     require('../assets/animal_icons/11.png'),
     require('../assets/animal_icons/12.png'),
     require('../assets/animal_icons/13.png'),
-];
+    require('../assets/animal_icons/14.png'),
+    require('../assets/animal_icons/15.png'),
+    require('../assets/animal_icons/16.png'),
+    require('../assets/animal_icons/17.png'),
+    require('../assets/animal_icons/18.png'),
+    require('../assets/animal_icons/19.png'),
+    require('../assets/animal_icons/20.png'),
+    require('../assets/animal_icons/21.png'),
+    require('../assets/animal_icons/22.png'),
+    require('../assets/animal_icons/23.png'),
+    require('../assets/animal_icons/24.png')
+]
+
+const getRandomIconsList = () => {
+    const shuffled = allIcons.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, 15);
+}
+
+const paths = getRandomIconsList()
 
 const randomDuration = () => {
-    const min = 8500;
-    const max = 10500;
+    const min = 7500;
+    const max = 14500;
     const step = 500;
 
     const numSteps = (max - min) / step;
@@ -40,10 +58,11 @@ const randomDuration = () => {
 const getRandomValues = (latency: number) => {
     const duration = randomDuration() + latency;
     const durations = [duration, duration];
-    const outputRange = [
-        Math.floor(Math.random() * (-450 - -150 + 1)) + -150,
-        Math.floor(Math.random() * (650 - 450 + 1)) + 450
-    ];
+    const startX = Math.floor(Math.random() * (101)) - 200;
+    const endX = Math.floor(Math.random() * (420)) + 600;
+
+    const outputRange = [startX, endX];
+
 
     return {
         duration: durations,
@@ -65,7 +84,7 @@ interface AnimationProps {
     seq: number;
 }
 
-const Animation = ({ size, seq }: AnimationProps) => {
+const Animation = memo(({ size, seq }: AnimationProps) => {
     return (
         <View style={WelcomeView.container}>
             {shuffleArray(paths).map((path: any, index: number) => {
@@ -84,7 +103,7 @@ const Animation = ({ size, seq }: AnimationProps) => {
             })}
         </View>
     )
-}
+})
 
 export default observer(() => {
     const [name, setName] = useState<string>("");
@@ -98,10 +117,10 @@ export default observer(() => {
         try {
             await AsyncStorage.setItem('username', name);
             setLoading(true)
-            globalVariables.setInitialLoad(true)
+            // globalVariables.setInitialLoad(true)
 
             setInterval(() => {
-                globalVariables.setInitialLoad(false)
+                // globalVariables.setInitialLoad(false)
                 globalVariables.setFirstTime(false)
                 setLoading(false)
             }, 1500)
@@ -137,7 +156,7 @@ export default observer(() => {
                         {name.length > 0 &&
                             <TouchableOpacity onPress={storeData}>
                                 {loading ?
-                                    <ProgressBar color="#9514E8" style={{height: 20}} />
+                                    <ProgressBar color="#9514E8" style={{ height: 20 }} />
                                     :
                                     <Feather
                                         name="check"
