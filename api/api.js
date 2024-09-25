@@ -1,5 +1,5 @@
 import { fetch } from './fetch'
-import { globalVariables, objects } from '../stores/store'
+import { globalVariables, objects, specificTarget } from '../stores/store'
 
 import { testing, messages } from '../stores/store'
 export const feed = (data) => {
@@ -17,6 +17,16 @@ export const talk = (data) => {
             globalVariables.setMessageLoad(false)
             if (item && item.data) {
                 messages.newMessage(item.data)
+                if(item.data.initiate) {
+                    specificTarget.setTarget(item.data.target)
+                    globalVariables.setRecording(false)
+                    globalVariables.setRecording(true)
+                } else {
+                    specificTarget.setTarget({
+                        name: "", 
+                        target: ""
+                    })
+                }
             }
             globalVariables.setInitialLoad(false)
         })
@@ -28,6 +38,7 @@ export const talk = (data) => {
 }
 
 export const PassFrame = (data) => {
+    console.log(data)
     return fetch("post", "/receiveFrame", data)
         .then((item) => {
             if (item && item.data) {

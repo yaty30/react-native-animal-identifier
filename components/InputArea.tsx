@@ -43,7 +43,9 @@ export default observer(() => {
                                 message: text,
                                 timestamp: 0,
                                 from: 0,
-                                id: 0
+                                id: 0,
+                                initiate: false,
+                                target: {}
                             })
                             talk({
                                 id: 0,

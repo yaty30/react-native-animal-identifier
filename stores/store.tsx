@@ -21,12 +21,64 @@ const message = types
         from: types.number
     })
 
+type targetNatureType = "aquatic" | "terrestrial" | "aerial";
+
+interface NewMessageTargetProps {
+    name: string;
+    nature: targetNatureType;
+}
+
 interface NewMessageProps {
     id: number;
     message: string;
     timestamp: number;
     from: number;
+    initiate: boolean;
+    target: NewMessageTargetProps | {};
 }
+
+export const specificTarget = types
+    .model({
+        name: types.string,
+        nature: types.string
+    })
+    .actions(self => ({
+        setTarget(target: NewMessageTargetProps) {
+            self.name = target.name;
+            self.nature = target.nature;
+        }
+    }))
+    .views(self => ({
+        get() {
+            let item = {}
+
+            if(self.name != "" && self.nature != "") {
+                item = {
+                    name: self.name,
+                    nature: self.nature
+                }
+            }
+
+            return item
+        }
+    }))
+    .create({
+        name: "",
+        nature: ""
+    })
+
+// {
+//     "id": 0,
+//     "message": "Of course! Let me gather some details about pigs for you. One moment please!",
+//     "timestamp": 0,
+//     "from": 1,
+//     "initiate": true,
+//     "target": {
+//         "name": "pig",
+//         "nature": "terrestrial"
+//     }
+// }
+
 export const messages = types
     .model({
         list: types.array(message)
@@ -34,12 +86,7 @@ export const messages = types
     .actions(self => ({
         newMessage(item: NewMessageProps) {
             item.id = self.list.length;
-            console.log(item);
             self.list.push(item);
-        },
-        stopLoading() {
-            const index = self.list.findIndex(x => x.from === 2)
-            self.list.slice(index, 1)
         }
     }))
     .views(self => ({
@@ -58,7 +105,8 @@ export const globalVariables = types
         messageLoading: types.boolean,
         initialLoading: types.boolean,
         nameLoading: types.boolean,
-        firstTime: types.boolean
+        firstTime: types.boolean,
+        frameBase64: types.string
     })
     .actions(self => ({
         setRecording(recording: boolean) {
@@ -78,6 +126,9 @@ export const globalVariables = types
         },
         setFirstTime(firstTime: boolean) {
             self.firstTime = firstTime
+        },
+        setFrameBase64(data: string) {
+            self.frameBase64 = data
         }
     }))
     .create({
@@ -86,7 +137,8 @@ export const globalVariables = types
         messageLoading: false,
         initialLoading: false,
         nameLoading: false,
-        firstTime: false
+        firstTime: false,
+        frameBase64: ""
     })
 
 interface ObjectDetailsPropos {

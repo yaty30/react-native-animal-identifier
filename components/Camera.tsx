@@ -6,7 +6,7 @@ import {
     useSkiaFrameProcessor
 } from 'react-native-vision-camera';
 import { observer } from 'mobx-react-lite';
-import { globalVariables } from '../stores/store';
+import { globalVariables, specificTarget } from '../stores/store';
 import { PassFrame } from '../api/api';
 import { useRunOnJS } from 'react-native-worklets-core';
 import { OpenCV } from 'react-native-fast-opencv';
@@ -26,7 +26,7 @@ export default observer(() => {
     // const plugin = VisionCameraProxy.initFrameProcessorPlugin('SkiaRectangleRegion', { model: 'fast' })
 
     const setImage = useRunOnJS((data: string) => {
-        setBase64(data);
+        globalVariables.setFrameBase64(data)
     }, []);
 
     let format = useCameraFormat(device, [
@@ -66,13 +66,13 @@ export default observer(() => {
     }, [globalVariables.recording]);
 
     useEffect(() => {
-        if(base64) {
+        if(globalVariables.frameBase64) {
             PassFrame({
-                data: base64
+                data: globalVariables.frameBase64,
+                target: specificTarget.get()
             })
         }
-    }, [base64])
-
+    }, [globalVariables.frameBase64])
 
     if (device == null) return <></>;
 
