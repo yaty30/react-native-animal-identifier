@@ -19,15 +19,6 @@ export default observer(() => {
         commentViewRef.current?.scrollToEnd({
             animated: false
         })
-
-        if (messages.list.length === 0 && !globalVariables.firstTime) {
-            globalVariables.setInitialLoad(true)
-            talk({
-                id: 0,
-                timestamp: 0,
-                message: "Hello there"
-            })
-        }
     }, [])
 
     return (
@@ -44,7 +35,7 @@ export default observer(() => {
                         <TouchableOpacity key={i} style={CommentStyles.commentBlock}>
                             <TouchableOpacity style={x.from === 0 ? CommentStyles.commentUserAvatar : CommentStyles.commentSystemAvatar}>
                                 {x.from === 0 ? // user: 0
-                                    <FontAwesome5 name="user-alt" size={15} color="#fff" />
+                                    <MaterialCommunityIcons name="account-circle" size={25} color="#fff" />
                                     :
                                     <MaterialCommunityIcons name="robot" size={20} color="#fff" />
                                 }

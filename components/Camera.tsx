@@ -66,9 +66,11 @@ export default observer(() => {
     }, [globalVariables.recording]);
 
     useEffect(() => {
-        PassFrame({
-            data: base64
-        })
+        if(base64) {
+            PassFrame({
+                data: base64
+            })
+        }
     }, [base64])
 
 

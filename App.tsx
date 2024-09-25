@@ -5,6 +5,7 @@ import { globalVariables } from './stores/store';
 
 import Home from './components/Home';
 import Welcoming from './components/Welcoming';
+import { talk } from './api/api';
 
 export default observer(() => {
     const getData = async () => {
@@ -15,6 +16,11 @@ export default observer(() => {
                 globalVariables.setFirstTime(true)
             } else {
                 globalVariables.setInitialLoad(true)
+                talk({
+                    id: 0,
+                    timestamp: 0,
+                    message: "Hello there"
+                })
             }
         } catch (e) {
             console.error(e)

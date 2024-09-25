@@ -135,27 +135,27 @@ export const objects = types
     }))
     .create({
         data: [
-            {
-                x: 150,
-                y: 43,
-                width: 100,
-                height: 100,
-                object: { 
-                    title: 'Clownfish', 
-                    description: 'The clownfish can be many different colours, depending on its species, including yellow, orange, red, and black. Most have white details. They are smaller fish, with the smallest around 7 to 8cm long and the longest 17cm long.' 
-                },
-                confident: 0.86
-            },
-            {
-                x: 393,
-                y: 120,
-                width: 121,
-                height: 121,
-                object: { 
-                    title: 'Blue Tang', 
-                    description: 'Blue tangs are high-bodied, compressed, pancake-shaped fishes with pointed snouts and small scales. Their eyes are located high on their heads and their mouths are small and positioned low. Their dorsal fins are continuous.' 
-                },
-                confident: 0.6
-            },
+            // {
+            //     x: 150,
+            //     y: 43,
+            //     width: 100,
+            //     height: 100,
+            //     object: { 
+            //         title: 'Clownfish', 
+            //         description: 'The clownfish can be many different colours, depending on its species, including yellow, orange, red, and black. Most have white details. They are smaller fish, with the smallest around 7 to 8cm long and the longest 17cm long.' 
+            //     },
+            //     confident: 0.86
+            // },
+            // {
+            //     x: 393,
+            //     y: 120,
+            //     width: 121,
+            //     height: 121,
+            //     object: { 
+            //         title: 'Blue Tang', 
+            //         description: 'Blue tangs are high-bodied, compressed, pancake-shaped fishes with pointed snouts and small scales. Their eyes are located high on their heads and their mouths are small and positioned low. Their dorsal fins are continuous.' 
+            //     },
+            //     confident: 0.6
+            // },
         ]
     });

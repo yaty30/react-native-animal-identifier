@@ -9,6 +9,7 @@ import { ProgressBar } from '@react-native-community/progress-bar-android';
 import { globalVariables } from '../stores/store';
 import { WelcomeView } from '../stores/styles';
 import Feather from 'react-native-vector-icons/Feather';
+import { talk } from '../api/api';
 
 const allIcons = [
     require('../assets/animal_icons/1.png'),
@@ -115,15 +116,20 @@ export default observer(() => {
 
     const storeData = async () => {
         try {
-            await AsyncStorage.setItem('username', name);
             setLoading(true)
-            // globalVariables.setInitialLoad(true)
-
-            setInterval(() => {
-                // globalVariables.setInitialLoad(false)
-                globalVariables.setFirstTime(false)
+            await AsyncStorage.setItem('username', name).then(() => {
                 setLoading(false)
-            }, 1500)
+                globalVariables.setFirstTime(false)
+                globalVariables.setInitialLoad(true)
+           })
+            
+            talk({
+                id: 0,
+                timestamp: 0,
+                message: "Hello there"
+            }).then(() => {
+                globalVariables.setInitialLoad(false)
+            })
 
         } catch (e) {
             console.error("error on storing data.");
@@ -132,7 +138,7 @@ export default observer(() => {
 
     return (
         <View style={WelcomeView.mainContainer}>
-            {Array.from({ length: 2 }).map((_, i) =>
+            {Array.from({ length: 1 }).map((_, i) =>
                 <Animation key={i} size={4 * i + 1} seq={i + 1} />
             )}
             <View style={WelcomeView.inputContainer}>
