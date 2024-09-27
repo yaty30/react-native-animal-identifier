@@ -21,7 +21,7 @@ const message = types
         from: types.number
     })
 
-type targetNatureType = "aquatic" | "terrestrial" | "aerial";
+type targetNatureType = "aquatic" | "terrestrial" | "aerial" | "";
 
 interface NewMessageTargetProps {
     name: string;
@@ -50,7 +50,10 @@ export const specificTarget = types
     }))
     .views(self => ({
         get() {
-            let item = {}
+            let item = {
+                name: "",
+                nature: ""
+            }
 
             if(self.name != "" && self.nature != "") {
                 item = {
@@ -66,19 +69,7 @@ export const specificTarget = types
         name: "",
         nature: ""
     })
-
-// {
-//     "id": 0,
-//     "message": "Of course! Let me gather some details about pigs for you. One moment please!",
-//     "timestamp": 0,
-//     "from": 1,
-//     "initiate": true,
-//     "target": {
-//         "name": "pig",
-//         "nature": "terrestrial"
-//     }
-// }
-
+    
 export const messages = types
     .model({
         list: types.array(message)

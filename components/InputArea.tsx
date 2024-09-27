@@ -3,7 +3,7 @@ import { View, TouchableOpacity, TextInput, Keyboard } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
 import { observer } from 'mobx-react-lite';
-import { messages, globalVariables } from '../stores/store';
+import { messages, globalVariables, specificTarget } from '../stores/store';
 import { talk } from '../api/api';
 import { InputAreaStyles } from '../stores/styles';
 import { ProgressBar } from '@react-native-community/progress-bar-android';
@@ -72,6 +72,10 @@ export default observer(() => {
                     }
                 ]}
                 onPress={() => {
+                    specificTarget.setTarget({
+                        name: "",
+                        nature: ""
+                    })
                     globalVariables.setRecording(
                         !globalVariables.recording
                     )

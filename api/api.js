@@ -18,14 +18,10 @@ export const talk = (data) => {
             if (item && item.data) {
                 messages.newMessage(item.data)
                 if(item.data.initiate) {
+                    console.log(`line 21: initiate ${item.data.initiate.toString()}`)
                     specificTarget.setTarget(item.data.target)
                     globalVariables.setRecording(false)
                     globalVariables.setRecording(true)
-                } else {
-                    specificTarget.setTarget({
-                        name: "", 
-                        target: ""
-                    })
                 }
             }
             globalVariables.setInitialLoad(false)
@@ -38,7 +34,6 @@ export const talk = (data) => {
 }
 
 export const PassFrame = (data) => {
-    console.log(data)
     return fetch("post", "/receiveFrame", data)
         .then((item) => {
             if (item && item.data) {

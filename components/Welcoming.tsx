@@ -126,7 +126,7 @@ export default observer(() => {
             talk({
                 id: 0,
                 timestamp: 0,
-                message: "Hello there"
+                message: `Hello there, you may call me ${name}.`
             }).then(() => {
                 globalVariables.setInitialLoad(false)
             })
