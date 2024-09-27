@@ -69,7 +69,8 @@ export default observer(() => {
         if(globalVariables.frameBase64) {
             PassFrame({
                 data: globalVariables.frameBase64,
-                target: specificTarget.get()
+                target: specificTarget.get(),
+                terminated: !globalVariables.recording
             })
         }
     }, [globalVariables.frameBase64])
