@@ -7,7 +7,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/yaty30/react-native-vision-camera-animal-identifier">
-    <img src="assets/logo.png" alt="Logo" width="80" height="80">
+    <img src="assets/rounded_logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">React Native Vision Camera Animal Identifier</h3>
