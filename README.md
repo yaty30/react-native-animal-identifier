@@ -18,23 +18,15 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="https://thejamesyip.com/react-native-vision-camera-animal-identifier-icon.png" alt="Logo" width="80" height="80">
+    <img src="http://thejamesyip.com/react-native-vision-camera-animal-identifier-icon.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">React-Native-Vision-Camera-Animal-Identifier</h3>
+  <h3 align="center">react-native-vision-camera-animal-identifier</h3>
 
 
 
