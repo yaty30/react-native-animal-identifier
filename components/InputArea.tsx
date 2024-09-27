@@ -42,7 +42,7 @@ export default observer(() => {
                         onPress={() => {
                             messages.newMessage({
                                 message: text,
-                                timestamp: 0,
+                                timestamp: GetTimestamp(),
                                 from: 0,
                                 id: 0,
                                 initiate: false,
@@ -73,6 +73,16 @@ export default observer(() => {
                     }
                 ]}
                 onPress={() => {
+                    if(specificTarget.get().name !== "") {
+                        messages.newMessage({
+                            message: `Stopping task: Identify ${specificTarget.get().name}`,
+                            timestamp: GetTimestamp(),
+                            from: 1,
+                            id: 0,
+                            initiate: false,
+                            target: {}
+                        })
+                    }
                     specificTarget.setTarget({
                         name: "",
                         nature: ""

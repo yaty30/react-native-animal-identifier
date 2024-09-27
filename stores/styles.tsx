@@ -118,7 +118,7 @@ const CommentStyles = StyleSheet.create({
         zIndex: 1
     },
     commentBlock: {
-        backgroundColor: "rgba(219, 216, 225, 0.35)",
+        backgroundColor: "rgba(38, 31, 30, 0.55)",
         borderRadius: 50,
         paddingVertical: 10,
         paddingHorizontal: 10,

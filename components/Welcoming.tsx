@@ -1,5 +1,5 @@
 import React, { useState, memo } from 'react';
-import { Image, Text, TextInput, TouchableOpacity } from 'react-native';
+import { Image, Keyboard, Text, TextInput, TouchableOpacity } from 'react-native';
 import { View, Animated, StyleSheet } from 'react-native';
 import { observer } from 'mobx-react-lite';
 
@@ -117,6 +117,7 @@ export default observer(() => {
     const storeData = async () => {
         try {
             setLoading(true)
+            Keyboard.dismiss()
             await AsyncStorage.setItem('username', name).then(() => {
                 setLoading(false)
                 globalVariables.setFirstTime(false)
