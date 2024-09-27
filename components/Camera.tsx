@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 
 import {
@@ -20,7 +20,6 @@ export default observer(() => {
     const { resize } = useResizePlugin();
     const device = useCameraDevice('back');
     const cameraRef = useRef<Camera>(null);
-    const [base64, setBase64] = useState<String>("");
 
     // Self-made frame processor -- Not in use
     // const plugin = VisionCameraProxy.initFrameProcessorPlugin('SkiaRectangleRegion', { model: 'fast' })

@@ -11,7 +11,6 @@ import InputArea from '../components/InputArea';
 import DescriptionCard from '../components/DescriptionCard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
 export default observer(() => {
     const [user, setUser] = useState<string>("");
     const handleContainerPress = () => {

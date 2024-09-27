@@ -22,7 +22,6 @@ export const talk = (data: any) => {
             if (item && item.data) {
                 messages.newMessage(item.data)
                 if(item.data.initiate) {
-                    console.log(`line 21: initiate ${item.data.initiate.toString()}`)
                     specificTarget.setTarget(item.data.target)
                     globalVariables.setRecording(false)
                     globalVariables.setRecording(true)

@@ -1,5 +1,5 @@
 import React, { useState, memo } from 'react';
-import { Image, Keyboard, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, Keyboard, TextInput, TouchableOpacity, View } from 'react-native';
 import { observer } from 'mobx-react-lite';
 
 import AnimatedAnimals from './AnimatedAnimals';

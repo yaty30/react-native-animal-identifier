@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Text, ScrollView } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { observer } from 'mobx-react-lite';
-import { globalVariables, messages } from '../stores/store';
+import { messages } from '../stores/store';
 import { CommentStyles } from '../stores/styles';
 
 export default observer(() => {
