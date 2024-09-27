@@ -19,7 +19,7 @@ export default observer(() => {
                 talk({
                     id: 0,
                     timestamp: 0,
-                    message: "Hello there"
+                    message: `Hello there, I am ${value}.`
                 })
             }
         } catch (e) {

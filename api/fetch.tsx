@@ -6,7 +6,13 @@ const host = "http://192.168.0.188"
 
 const port = 8000
 
-export const fetch = async (method, url, body) => {
+interface FetchProps {
+    method: string
+    url: string
+    body: any
+}
+
+export const fetch = async ({ method, url, body }: FetchProps) => {
     const mainFetch = async () => {
 
         if (method === "post") {
@@ -21,7 +27,7 @@ export const fetch = async (method, url, body) => {
                 url: host + url,
                 responseType: 'json'
             })
-            .then(res => res)
+                .then(res => res)
         }
     }
 

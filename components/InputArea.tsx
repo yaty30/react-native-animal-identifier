@@ -7,6 +7,7 @@ import { messages, globalVariables, specificTarget } from '../stores/store';
 import { talk } from '../api/api';
 import { InputAreaStyles } from '../stores/styles';
 import { ProgressBar } from '@react-native-community/progress-bar-android';
+import { GetTimestamp } from '../stores/utils';
 
 export default observer(() => {
     const [text, onChangeText] = useState<string>('');
@@ -48,8 +49,8 @@ export default observer(() => {
                                 target: {}
                             })
                             talk({
-                                id: 0,
-                                timestamp: 0,
+                                id: messages.list.length + 1,
+                                timestamp: GetTimestamp(),
                                 message: text
                             })
                             onChangeText("")

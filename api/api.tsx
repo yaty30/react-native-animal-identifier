@@ -2,18 +2,22 @@ import { fetch } from './fetch'
 import { globalVariables, objects, specificTarget } from '../stores/store'
 
 import { testing, messages } from '../stores/store'
-export const feed = (data) => {
-    return fetch("post", "/streamFeed", data)
-        .then((item) => {
+export const feed = (data: any) => {
+    return fetch({method:"post", url: "/streamFeed", body: data})
+        .then((item: any) => {
             testing.setFrame(item.data.footageFrame)
             return item.data
         })
 }
 
-export const talk = (data) => {
+export const talk = (data: any) => {
     globalVariables.setMessageLoad(true)
-    return fetch("post", "/talk", data)
-        .then((item) => {
+    return fetch({
+        method: "post", 
+        url: "/talk", 
+        body: data
+    })
+        .then((item: any) => {
             globalVariables.setMessageLoad(false)
             if (item && item.data) {
                 messages.newMessage(item.data)
@@ -26,16 +30,20 @@ export const talk = (data) => {
             }
             globalVariables.setInitialLoad(false)
         })
-        .catch((e) => {
+        .catch((e: Error) => {
             console.error(e)
             globalVariables.setMessageLoad(false)
             globalVariables.setInitialLoad(false)
         })
 }
 
-export const PassFrame = (data) => {
-    return fetch("post", "/receiveFrame", data)
-        .then((item) => {
+export const PassFrame = (data: any) => {
+    return fetch({
+        method: "post", 
+        url: "/receiveFrame", 
+        body: data
+    })
+        .then((item: any) => {
             if (item && item.data) {
                 objects.setFrameSkia(item.data)
             }
