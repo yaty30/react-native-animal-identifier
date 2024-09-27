@@ -13,32 +13,6 @@
   <h3 align="center">React Native Vision Camera Animal Identifier</h3>
 </div>
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
-</details>
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
@@ -144,5 +118,5 @@ Vision Camera Documentation
 [JQuery-url]: https://jquery.com 
 [React-Native]: https://img.shields.io/badge/React%20Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-Native-url]: https://reactnative.dev/
-[Vision-Camera]: https://img.shields.io/badge/React%20Native%20Vision%20Camera-2D1237?style=for-the-badge&logo=campaignmonitor&logoColor=61DAFB
+[Vision-Camera]: https://img.shields.io/badge/React%20Native%20Vision%20Camera-20232A?style=for-the-badge&logo=campaignmonitor&logoColor=61DAFB
 [Vision-Camera-url]: https://reactnative.dev/
