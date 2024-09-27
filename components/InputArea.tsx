@@ -3,11 +3,12 @@ import { View, TouchableOpacity, TextInput, Keyboard } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 
 import { observer } from 'mobx-react-lite';
-import { messages, globalVariables, specificTarget } from '../stores/store';
+import { messages, globalVariables } from '../stores/store';
 import { talk } from '../api/api';
 import { InputAreaStyles } from '../stores/styles';
 import { ProgressBar } from '@react-native-community/progress-bar-android';
 import { GetTimestamp } from '../stores/utils';
+import Identify from './Identify';
 
 export default observer(() => {
     const [text, onChangeText] = useState<string>('');
@@ -65,41 +66,7 @@ export default observer(() => {
                 }
             </View>
 
-            <TouchableOpacity
-                style={[
-                    InputAreaStyles.recordButton,
-                    {
-                        backgroundColor: globalVariables.recording ? "rgba(241, 26, 67, 0.85)" : "rgba(52, 52, 52, 0.75)"
-                    }
-                ]}
-                onPress={() => {
-                    if(specificTarget.get().name !== "") {
-                        messages.newMessage({
-                            message: `Stopping task: Identify ${specificTarget.get().name}`,
-                            timestamp: GetTimestamp(),
-                            from: 1,
-                            id: 0,
-                            initiate: false,
-                            target: {}
-                        })
-                    }
-                    specificTarget.setTarget({
-                        name: "",
-                        nature: ""
-                    })
-                    globalVariables.setRecording(
-                        !globalVariables.recording
-                    )
-                }}
-            >
-                <Feather
-                    name={globalVariables.recording ? "pause" : "play"}
-                    style={InputAreaStyles.recordButtonIcon}
-                    size={24}
-                />
-            </TouchableOpacity>
+            <Identify />
         </View>
     )
 })
-
-
