@@ -22,7 +22,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="https://thejamesyip.com/react-native-vision-camera-animal-identifier-icon.png">
     <img src="https://thejamesyip.com/react-native-vision-camera-animal-identifier-icon.png" alt="Logo" width="80" height="80">
   </a>
 
