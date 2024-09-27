@@ -65,8 +65,9 @@ export default observer(() => {
                     </TouchableOpacity>
                 }
             </View>
-
+            
             <Identify />
+
         </View>
     )
 })
