@@ -49,7 +49,9 @@ const DetailModel = observer(() => {
                         borderColor: getBorderColor(object.confident),
                     }]}
                 >
-                    <Text>{object.object.title}</Text>
+                    <Text style={DetectedObject.objectTitle}>
+                        {object.object.title}
+                    </Text>
                 </TouchableOpacity>
             ))}
 
