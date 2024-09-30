@@ -45,7 +45,7 @@ export default observer(() => {
     const frameprocessor = useSkiaFrameProcessor((frame) => {
         'worklet'
         frame.render();
-        const times = 3;
+        const times = 4;
         if (globalVariables.recording) {
             const resized = resize(frame, {
                 scale: {
