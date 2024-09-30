@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { TouchableOpacity } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import { observer } from 'mobx-react-lite';
-import { messages, globalVariables, specificTarget } from '../stores/store';
+import { messages, globalVariables, specificTarget, objects } from '../stores/store';
 import { InputAreaStyles } from '../stores/styles';
 import { GetTimestamp } from '../stores/utils';
 import axios, { CancelTokenSource } from 'axios';
@@ -15,6 +15,8 @@ export default observer(() => {
         if (globalVariables.recording == false && cancelTokenSource.current) {
             cancelTokenSource.current.cancel('Operation canceled due to recording stopped.');
         }
+
+        !globalVariables.recording && objects.clear()
 
         // Create a new CancelToken for future requests
         cancelTokenSource.current = axios.CancelToken.source();

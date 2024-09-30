@@ -29,7 +29,7 @@ export default observer(() => {
     }, []);
 
     let format = useCameraFormat(device, [
-        { fps: 100 },
+        { fps: 24 },
         { videoAspectRatio: 9 / 16 },
         { videoResolution: { width: 2160, height: 3048 } },
     ])
@@ -47,7 +47,6 @@ export default observer(() => {
         frame.render();
         const times = 3;
         if (globalVariables.recording) {
-            console.log("W:" + frame.width + " H: " + frame.height)
             const resized = resize(frame, {
                 scale: {
                     width: frame.width / times,

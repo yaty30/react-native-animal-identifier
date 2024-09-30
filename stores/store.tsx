@@ -6,7 +6,7 @@ export const testing = types
     })
     .actions(self => ({
         setFrame(frame: string) {
-            if(frame != "") self.frame = frame
+            if (frame != "") self.frame = frame
         }
     }))
     .create({
@@ -55,7 +55,7 @@ export const specificTarget = types
                 nature: ""
             }
 
-            if(self.name != "" && self.nature != "") {
+            if (self.name != "" && self.nature != "") {
                 item = {
                     name: self.name,
                     nature: self.nature
@@ -69,7 +69,7 @@ export const specificTarget = types
         name: "",
         nature: ""
     })
-    
+
 export const messages = types
     .model({
         list: types.array(message)
@@ -138,6 +138,7 @@ interface ObjectDetailsPropos {
 }
 
 interface ObjectPropos {
+    id: number;
     x: number;
     y: number;
     width: number;
@@ -154,6 +155,7 @@ const objectDetails = types
 
 const object = types
     .model({
+        id: types.number,
         x: types.number,
         y: types.number,
         width: types.number,
@@ -169,28 +171,50 @@ export const objects = types
     .actions(self => ({
         setFrameSkia(item: ObjectPropos[]) {
             'worklet';
-            self.data.clear()
-            item.forEach(object => {
-                self.data.push(object)
-            })
-            console.log(self.data.length)
+            if (globalVariables.recording) {
+                self.data.clear()
+                item.forEach(object => {
+                    self.data.push(object)
+                })
+            } else {
+                console.log("Pasued.")
+            }
         },
         clear() {
             self.data.clear()
         },
     }))
+    .views(self => ({
+        getObjectDetailById(id: number) {
+            const index = self.data.findIndex(obj => obj.id === id)
+            return self.data[index].object
+        }
+    }))
     .create({
         data: [
-            // {
-            //     x: 66,
-            //     y: 112,
-            //     width: 36,
-            //     height: 36,
-            //     object: {
-            //         title: "Blue Tang",
-            //         description: "Blue tangs are high-bodied, compressed, pancake-shaped fishes with pointed snouts and small scales. Their eyes are located high on their heads and their mouths are small and positioned low. Their dorsal fins are continuous."
-            //     },
-            //     confident: 0.88
-            // }
+            {
+                id: 9384290,
+                x: 66,
+                y: 112,
+                width: 36,
+                height: 36,
+                object: {
+                    title: "Blue Tang",
+                    description: "Blue tangs are high-bodied, compressed, pancake-shaped fishes with pointed snouts and small scales. Their eyes are located high on their heads and their mouths are small and positioned low. Their dorsal fins are continuous."
+                },
+                confident: 0.88
+            },
+            {
+                id: 49384290,
+                x: 166,
+                y: 212,
+                width: 86,
+                height: 86,
+                object: {
+                    title: "Clownfish",
+                    description: "ASDASDA bodied, compressed, pancake-shaped fishes with pointed snouts and small scales. Their eyes are located high on their heads and their mouths are small and positioned low. Their dorsal fins are continuous."
+                },
+                confident: 0.88
+            }
         ]
     });
