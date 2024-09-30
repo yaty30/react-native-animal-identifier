@@ -65,7 +65,9 @@ export default observer(() => {
             <TouchableWithoutFeedback onPress={handleContainerPress}>
                 <View style={MainStyles.container}>
                     <Camera />
-                    <DetailModel />
+                    {!globalVariables.keyboardTrigger &&
+                        <DetailModel />
+                    }
                     <Body />
                 </View>
             </TouchableWithoutFeedback>

@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { Keyboard, TouchableOpacity } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import { observer } from 'mobx-react-lite';
 import { messages, globalVariables, specificTarget, objects } from '../stores/store';
@@ -11,6 +11,7 @@ export default observer(() => {
     const cancelTokenSource = useRef<CancelTokenSource | null>(null);
 
     const handlePress = () => {
+        Keyboard.dismiss();
         // If recording is false, cancel all requests
         if (globalVariables.recording == false && cancelTokenSource.current) {
             cancelTokenSource.current.cancel('Operation canceled due to recording stopped.');
