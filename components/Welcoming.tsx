@@ -1,5 +1,5 @@
 import React, { useState, memo } from 'react';
-import { Image, Keyboard, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, Keyboard, TextInput, TouchableOpacity, View, Text } from 'react-native';
 import { observer } from 'mobx-react-lite';
 
 import AnimatedAnimals from './AnimatedAnimals';
@@ -109,6 +109,11 @@ export default observer(() => {
                         }
                     </View>
                 }
+            </View>
+            <View style={WelcomeView.versionView}>
+                <Text style={WelcomeView.version}>
+                    {globalVariables.getVersion()}
+                </Text>
             </View>
         </View>
     );

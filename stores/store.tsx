@@ -97,7 +97,8 @@ export const globalVariables = types
         initialLoading: types.boolean,
         nameLoading: types.boolean,
         firstTime: types.boolean,
-        frameBase64: types.string
+        frameBase64: types.string,
+        version: types.string
     })
     .actions(self => ({
         setRecording(recording: boolean) {
@@ -120,6 +121,14 @@ export const globalVariables = types
         },
         setFrameBase64(data: string) {
             self.frameBase64 = data
+        },
+        setVersion(version: string) {
+            self.version = version
+        }
+    }))
+    .views(self => ({
+        getVersion() {
+            return self.version
         }
     }))
     .create({
@@ -128,8 +137,9 @@ export const globalVariables = types
         messageLoading: false,
         initialLoading: false,
         nameLoading: false,
-        firstTime: false,
-        frameBase64: ""
+        firstTime: true,
+        frameBase64: "",
+        version: "v1.0.0"
     })
 
 interface ObjectDetailsPropos {

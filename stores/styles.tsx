@@ -283,6 +283,17 @@ const WelcomeView = StyleSheet.create({
         backgroundColor: 'rgba(255, 255, 255, 0.85)',
         borderRadius: 50,
     },
+    versionView: {
+        position: 'absolute', 
+        bottom: 20, 
+        zIndex: 1, 
+        width: '100%'
+    },
+    version: {
+        fontSize: 13, 
+        color: '#aaa', 
+        textAlign: 'center'
+    }
 });
 
 export {
