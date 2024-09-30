@@ -137,7 +137,7 @@ export const globalVariables = types
         messageLoading: false,
         initialLoading: false,
         nameLoading: false,
-        firstTime: true,
+        firstTime: false,
         frameBase64: "",
         version: "v1.0.0"
     })
