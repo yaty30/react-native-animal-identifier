@@ -1,8 +1,9 @@
 import axios from "axios";
+import { NativeModules } from 'react-native';
 
 // const host = "http://192.168.110.189"
 const host = "http://192.168.0.188"
-// const host = "http://192.168.50.36"
+// const host = "http://192.168.50.32" 
 
 const port = 8000
 
@@ -14,7 +15,6 @@ interface FetchProps {
 
 export const fetch = async ({ method, url, body }: FetchProps) => {
     const mainFetch = async () => {
-
         if (method === "post") {
             return axios({
                 method: 'post',

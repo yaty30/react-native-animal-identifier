@@ -2,6 +2,7 @@ import { fetch } from './fetch'
 import { globalVariables, objects, specificTarget } from '../stores/store'
 
 import { testing, messages } from '../stores/store'
+import { useRef } from 'react'
 export const feed = (data: any) => {
     return fetch({method:"post", url: "/streamFeed", body: data})
         .then((item: any) => {
@@ -42,10 +43,10 @@ export const PassFrame = (data: any) => {
         url: "/receiveFrame", 
         body: data
     })
-        .then((item: any) => {
-            if (item && item.data) {
-                objects.setFrameSkia(item.data)
-            }
-            return item
-        })
+    .then((item: any) => {
+        if (item && item.data) {
+            objects.setFrameSkia(item.data)
+        }
+        return item
+    })
 }

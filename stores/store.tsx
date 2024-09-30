@@ -170,12 +170,27 @@ export const objects = types
         setFrameSkia(item: ObjectPropos[]) {
             'worklet';
             self.data.clear()
-            item.forEach(object => self.data.push(object))
+            item.forEach(object => {
+                self.data.push(object)
+            })
+            console.log(self.data.length)
         },
         clear() {
             self.data.clear()
         },
     }))
     .create({
-        data: []
+        data: [
+            // {
+            //     x: 66,
+            //     y: 112,
+            //     width: 36,
+            //     height: 36,
+            //     object: {
+            //         title: "Blue Tang",
+            //         description: "Blue tangs are high-bodied, compressed, pancake-shaped fishes with pointed snouts and small scales. Their eyes are located high on their heads and their mouths are small and positioned low. Their dorsal fins are continuous."
+            //     },
+            //     confident: 0.88
+            // }
+        ]
     });

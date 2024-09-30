@@ -45,8 +45,9 @@ export default observer(() => {
     const frameprocessor = useSkiaFrameProcessor((frame) => {
         'worklet'
         frame.render();
-        const times = 8;
+        const times = 3;
         if (globalVariables.recording) {
+            console.log("W:" + frame.width + " H: " + frame.height)
             const resized = resize(frame, {
                 scale: {
                     width: frame.width / times,
@@ -65,14 +66,14 @@ export default observer(() => {
     }, [globalVariables.recording]);
 
     useEffect(() => {
-        if(globalVariables.frameBase64) {
+        if(globalVariables.frameBase64 && globalVariables.recording) {
             PassFrame({
                 data: globalVariables.frameBase64,
                 target: specificTarget.get(),
                 terminated: !globalVariables.recording
             })
         }
-    }, [globalVariables.frameBase64])
+    }, [globalVariables.frameBase64, globalVariables.recording])
 
     if (device == null) return <></>;
 
@@ -85,7 +86,7 @@ export default observer(() => {
             format={format}
             video={true}
             frameProcessor={frameprocessor}
-            outputOrientation="device"
+            outputOrientation="preview"
         />
     )
 })

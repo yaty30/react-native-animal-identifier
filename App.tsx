@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { observer } from 'mobx-react-lite';
 import { globalVariables } from './stores/store';
+import { Dimensions } from 'react-native';
 
 import Home from './components/Home';
 import Welcoming from './components/Welcoming';
@@ -38,7 +39,8 @@ export default observer(() => {
 
 
     useEffect(() => {
-        debug()
+        // debug()
+        console.log(Dimensions.get('window'))
         getData()
     }, [])
 
