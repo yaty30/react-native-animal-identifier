@@ -65,11 +65,14 @@ export default observer(() => {
     }, [globalVariables.recording]);
 
     useEffect(() => {
-        if(globalVariables.frameBase64 && globalVariables.recording) {
+        if (globalVariables.frameBase64 && globalVariables.recording) {
             PassFrame({
-                data: globalVariables.frameBase64,
-                target: specificTarget.get(),
-                terminated: !globalVariables.recording
+                host: globalVariables.targetServer,
+                body: {
+                    data: globalVariables.frameBase64,
+                    target: specificTarget.get(),
+                    terminated: !globalVariables.recording
+                }
             })
         }
     }, [globalVariables.frameBase64, globalVariables.recording])

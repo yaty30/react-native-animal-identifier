@@ -98,7 +98,9 @@ export const globalVariables = types
         nameLoading: types.boolean,
         firstTime: types.boolean,
         frameBase64: types.string,
-        version: types.string
+        version: types.string,
+        openUpdateTargetServer: types.boolean,
+        targetServer: types.string
     })
     .actions(self => ({
         setRecording(recording: boolean) {
@@ -124,6 +126,12 @@ export const globalVariables = types
         },
         setVersion(version: string) {
             self.version = version
+        },
+        setTargetServer(server: string) {
+            self.targetServer = server
+        },
+        setOpenUpdateTargetServer(status: boolean) {
+            self.openUpdateTargetServer = status
         }
     }))
     .views(self => ({
@@ -139,7 +147,9 @@ export const globalVariables = types
         nameLoading: false,
         firstTime: false,
         frameBase64: "",
-        version: "v1.0.0"
+        version: "v1.0.0",
+        openUpdateTargetServer: false,
+        targetServer: "192.168.0.188"
     })
 
 interface ObjectDetailsPropos {

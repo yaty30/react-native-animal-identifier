@@ -7,6 +7,7 @@ import { Dimensions } from 'react-native';
 import Home from './components/Home';
 import Welcoming from './components/Welcoming';
 import { talk } from './api/api';
+import UpdateTargetServer from './components/UpdateTargetServer';
 
 export default observer(() => {
     const getData = async () => {
@@ -18,9 +19,12 @@ export default observer(() => {
             } else {
                 globalVariables.setInitialLoad(true)
                 talk({
-                    id: 0,
-                    timestamp: 0,
-                    message: `Hello there, I am ${value}.`
+                    host: globalVariables.targetServer,
+                    body: {
+                        id: 0,
+                        timestamp: 0,
+                        message: `Hello there, I am ${value}.`
+                    }
                 })
             }
         } catch (e) {
@@ -45,9 +49,14 @@ export default observer(() => {
     }, [])
 
     return (
-        globalVariables.firstTime || globalVariables.initialLoading?
-            <Welcoming />
-            :
-            <Home />
+        <>
+            <UpdateTargetServer />
+            {
+                globalVariables.firstTime || globalVariables.initialLoading ?
+                    <Welcoming />
+                    :
+                    <Home />
+            }
+        </>
     )
 })

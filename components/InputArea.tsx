@@ -50,9 +50,12 @@ export default observer(() => {
                                 target: {}
                             })
                             talk({
-                                id: messages.list.length + 1,
-                                timestamp: GetTimestamp(),
-                                message: text
+                                host: globalVariables.targetServer,
+                                body: {
+                                    id: messages.list.length + 1,
+                                    timestamp: GetTimestamp(),
+                                    message: text
+                                }
                             })
                             onChangeText("")
                             Keyboard.dismiss()
@@ -65,7 +68,7 @@ export default observer(() => {
                     </TouchableOpacity>
                 }
             </View>
-            
+
             <Identify />
 
         </View>
