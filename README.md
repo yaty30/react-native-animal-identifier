@@ -25,8 +25,6 @@ This project utilizes React Native and Vision Camera to identify animals in real
 * Utilizes modern React Native technologies for a smooth user experience.
 * Offers a valuable tool for education and conservation efforts.
 
-Use the `BLANK_README.md` to get started.
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
