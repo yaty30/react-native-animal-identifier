@@ -32,7 +32,7 @@ const Body = memo(() => {
         <View style={MainStyles.bodyView}>
             <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', width: '100%' }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <TouchableOpacity style={MainStyles.avatar}></TouchableOpacity>
+                    <TouchableOpacity style={MainStyles.avatar} onPress={() => globalVariables.setOpenUpdateTargetServer(true)}></TouchableOpacity>
                     <Text style={MainStyles.name}>{user}</Text>
                 </View>
                 <TouchableOpacity

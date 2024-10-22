@@ -61,12 +61,15 @@ export default observer(() => {
                 setLoading(false)
                 globalVariables.setFirstTime(false)
                 globalVariables.setInitialLoad(true)
-           })
-            
+            })
+
             talk({
-                id: 0,
-                timestamp: 0,
-                message: `Hello there, you may call me ${name}.`
+                host: globalVariables.targetServer,
+                body: {
+                    id: 0,
+                    timestamp: 0,
+                    message: `Hello there, you may call me ${name}.`
+                }
             }).then(() => {
                 globalVariables.setInitialLoad(false)
             })
@@ -86,7 +89,12 @@ export default observer(() => {
                     <Initialising />
                     :
                     <View style={WelcomeView.inputView}>
-                        <Image source={require("../assets/welcome.png")} style={WelcomeView.welcome} />
+                        <TouchableOpacity onPress={() => globalVariables.setOpenUpdateTargetServer(true)}>
+                            <Image
+                                source={require("../assets/welcome.png")}
+                                style={WelcomeView.welcome}
+                            />
+                        </TouchableOpacity>
                         <TextInput
                             style={WelcomeView.input}
                             onChangeText={handleNameChange}
