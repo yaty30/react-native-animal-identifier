@@ -39,7 +39,6 @@ export const talk = (data: any) => {
 }
 
 export const PassFrame = (data: any) => {
-    console.log(data.host)
     return fetch({
         host: data.host,
         method: "post", 
@@ -52,4 +51,5 @@ export const PassFrame = (data: any) => {
         }
         return item
     })
+    .catch(e => console.error(e))
 }

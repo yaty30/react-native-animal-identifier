@@ -38,7 +38,17 @@ export const fetch = async ({ host, method, url, body }: FetchProps) => {
         const res = await mainFetch()
         return res
     }
-    catch (err) {
-        console.log(err)
+    catch (error: any) {
+        console.error('Error:', error.message);
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          console.error('Data:', error.response.data);
+          console.error('Status:', error.response.status);
+          console.error('Headers:', error.response.headers);
+        } else {
+          // Something happened in setting up the request
+          console.error('Error Message:', error.message);
+          console.log(error)
+        }
     }
 }

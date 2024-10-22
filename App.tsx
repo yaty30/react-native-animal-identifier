@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
+import { View, Text, Button } from 'react-native';
+import { PermissionsAndroid, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { observer } from 'mobx-react-lite';
 import { globalVariables } from './stores/store';
-import { Dimensions } from 'react-native';
 
 import Home from './components/Home';
 import Welcoming from './components/Welcoming';
@@ -32,19 +33,31 @@ export default observer(() => {
         }
     };
 
-    const debug = async () => {
-        try {
-            console.log("DEBUG TESTING")
-            await AsyncStorage.setItem('username', "");
-        } catch (e) {
-            console.error("error on storing data.");
+    const requestCameraPermission = async () => {
+        if (Platform.OS === 'android') {
+            try {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.CAMERA,
+                    {
+                        title: 'Camera Permission',
+                        message: 'This app needs access to your camera.',
+                        buttonNeutral: 'Ask Me Later',
+                        buttonNegative: 'Cancel',
+                        buttonPositive: 'OK',
+                    }
+                );
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    console.log('Camera permission granted');
+                } else {
+                    console.log('Camera permission denied');
+                }
+            } catch (err) {
+                console.warn(err);
+            }
         }
     };
 
-
     useEffect(() => {
-        // debug()
-        console.log(Dimensions.get('window'))
         getData()
     }, [])
 
